@@ -1,7 +1,7 @@
 class PracticeMail extends Mail{
     sheetId:string;
-    sheetName:string;
-    sheet:Sheet;
+    menuSheetName:string;
+    menuSheet:Sheet;
     menuSessions:MenuSession[] = [];
     envs;
 
@@ -9,8 +9,8 @@ class PracticeMail extends Mail{
         super(tag, purpose, params, sendFlag, others);
         this.envs = envs;
         this.sheetId = this.envs["SHEETID"];
-        this.sheetName = this.envs["SHEET_MENU"];
-        this.sheet = new Sheet(this.sheetId, this.sheetName);
+        this.menuSheetName = this.envs["SHEET_MENU"];
+        this.menuSheet = new Sheet(this.sheetId, this.menuSheetName);
         try{
             this.parseMenu();
         }catch(e){
@@ -101,14 +101,14 @@ ${destination}
 
     parseMenu(){
         const tomorrow:string = Utility.getAfterDays(1);
-        const todayRows:string[] = this.sheet.getTheDateRows(tomorrow);
+        const todayRows:string[] = this.menuSheet.getTheDateRows(tomorrow);
 
         if (todayRows.length == 1){
-            const events:string[] = todayRows[0][this.sheet.getColNum("Event")].split("/");
-            const details:string[] = todayRows[0][this.sheet.getColNum("Detail")].split("/");
-            const times:string[] = todayRows[0][this.sheet.getColNum("Time")].split("/");
-            const places:string[] = todayRows[0][this.sheet.getColNum("Place")].split("/");
-            const sendFlag:string = todayRows[0][this.sheet.getColNum("SendFlag")];
+            const events:string[] = todayRows[0][this.menuSheet.getColNum("Event")].split("/");
+            const details:string[] = todayRows[0][this.menuSheet.getColNum("Detail")].split("/");
+            const times:string[] = todayRows[0][this.menuSheet.getColNum("Time")].split("/");
+            const places:string[] = todayRows[0][this.menuSheet.getColNum("Place")].split("/");
+            const sendFlag:string = todayRows[0][this.menuSheet.getColNum("SendFlag")];
             this.overwriteSendFlag(sendFlag);
 
             const splitedNums = [events, details, times, places].map(x => x.length);
