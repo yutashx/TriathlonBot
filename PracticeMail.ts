@@ -13,14 +13,14 @@ class PracticeMail extends Mail{
         this.sheet = new Sheet(this.sheetId, this.sheetName);
         try{
             this.parseMenu();
-        }catch{
+        }catch(e){
             this.sendFlag = "prevent";
-            console.log(`Spreadsheet parsing error.`);
+            console.log(`Spreadsheet parsing error: ${e}`);
         }
     }
 
     generateSubject():string{
-        const prefix:string = this.sendFlag == "presend"? `[Pre-send]`: ``;
+        const prefix:string = this.sendFlag == "presend"? `[Presend]`: ``;
         const subject:string =  prefix + `[${this.tag}]${this.params.subject} `
 
         return subject;
@@ -69,11 +69,15 @@ class PracticeMail extends Mail{
             var details:string[] = [];
             if (links.length == this.menuSessions.length){
                 for (var i=0; i<links.length; i++){
+                    const meetingPlace:string = this.menuSessions[i].event == "バイク"? "サークル棟": this.menuSessions[i].place;
+                    const destination:string = this.menuSessions[i].event == "バイク"? `行き先：  ${this.menuSessions[i].place}<br>\n`: ``;
                     const detail = `
 -------------------------<br>\n
-main: ${links[i]}<br>\n
-集合時間: ${this.menuSessions[i].time}<br>\n
-集合場所: ${this.menuSessions[i].place}<br>\n
+種目：    ${this.menuSessions[i].event}<br>\n
+メイン：   ${links[i]}<br>\n
+集合時間： ${this.menuSessions[i].time}<br>\n
+集合場所： ${meetingPlace}<br>\n
+${destination}
 --------------------------<br>\n
                     `
                     details.push(detail);
