@@ -35,7 +35,8 @@ class Mail{
     //generate > make
 
     generateSubject():string{
-        const subject:string =  `[${this.tag}]${this.params.subject} `
+        const prefix:string = this.sendFlag == "presend"? `[Presend]`: ``;
+        const subject:string =  prefix + `[${this.tag}]${this.params.subject} `
 
         return subject;
     }
