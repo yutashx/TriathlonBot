@@ -19,13 +19,6 @@ class PracticeMail extends Mail{
         }
     }
 
-    generateSubject():string{
-        const prefix:string = this.sendFlag == "presend"? `[Presend]`: ``;
-        const subject:string =  prefix + `[${this.tag}]${this.params.subject} `
-
-        return subject;
-    }
-
     makeAbstract():string{
         const eventsSummary:string = this.menuSessions.map(x => x.event).join("/");
         const eventMain = ()=>{
