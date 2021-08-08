@@ -17,21 +17,25 @@ class Sheet{
             const rows:string[] = this.searchRows(sheetNo, "Date", date);
 
             return rows;
-        }catch{
-            console.log(`Some Error is occurred in getTheDataRows.`);
+        }catch(e){
+            console.log(`getTheDataRows: ${e}`);
 
             return [];
         }
     }
 
-    getBikeDayMembers(){
+    getBikeMembers(style:ParticipantStyle):string[]{
         try{
             const sheetNo:number = this.searchSheetNumber();
-            //const rows = this.searchRows(sheetNo, "Date", date);
-        }catch{
-            console.log(`Some Error is occurred.`);
-        }
+            const rows = this.searchRows(sheetNo, "ParticipantStyle", style as string);
+            const names = rows.map(x => x[this.getColNum("Name")]);
 
+            return names;
+        }catch{
+            console.log(`getBikeMembers: {e}`);
+
+            return [];
+        }
     }
 
     searchRows(sheetNo:number, colName:SheetColName, item:string){
@@ -61,6 +65,7 @@ class Sheet{
 
     getColNum(colName: SheetColName){
         switch(colName){
+            //Menu Sheet
             case "Date":
                 return 0;
             case "Day":
@@ -75,6 +80,16 @@ class Sheet{
                 return 5;
             case "SendFlag":
                 return 6;
+
+            //Bike Member Sheet, column 0 is the same as the menu sheet
+            case "Name":
+                return 1;
+            case "ParticipantStyle":
+                return 2;
+            case "BikeStatus":
+                return 3;
+            case "Remarks":
+                return 4;
             default:
                 return -1;
         }

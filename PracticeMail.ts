@@ -1,16 +1,18 @@
 class PracticeMail extends Mail{
-    sheetId:string;
-    menuSheetName:string;
     menuSheet:Sheet;
+    bikeMemberSheet:Sheet;
     menuSessions:MenuSession[] = [];
     envs;
 
     constructor(tag: string, purpose: Purpose, params: MailParams, sendFlag: SendFlag, envs: any, others?:string[]){
         super(tag, purpose, params, sendFlag, others);
         this.envs = envs;
-        this.sheetId = this.envs["SHEETID"];
-        this.menuSheetName = this.envs["SHEET_MENU"];
-        this.menuSheet = new Sheet(this.sheetId, this.menuSheetName);
+        const sheetId = this.envs["SHEETID"];
+        const menuSheetName = this.envs["SHEET_MENU"];
+        const bikeMemberSheetName = this.envs["SHEET_BIKE"];
+
+        this.menuSheet = new Sheet(sheetId, menuSheetName);
+        this.bikeMemberSheet = new Sheet(sheetId, bikeMemberSheetName);
         try{
             this.parseMenu();
         }catch(e){
@@ -62,9 +64,11 @@ class PracticeMail extends Mail{
             var details:string[] = [];
             if (links.length == this.menuSessions.length){
                 for (var i=0; i<links.length; i++){
+                    const bikeMembers:string = this.menuSessions[i].event == "バイク"? this.listUpBikeMembers(): "";
                     const meetingPlace:string = this.menuSessions[i].event == "バイク"? "サークル棟": this.menuSessions[i].place;
                     const destination:string = this.menuSessions[i].event == "バイク"? `行き先：  ${this.menuSessions[i].place}<br>\n`: ``;
                     const detail = `
+${bikeMembers + "<br>\n"}
 -------------------------<br>\n
 種目：    ${this.menuSessions[i].event}<br>\n
 メイン：   ${links[i]}<br>\n
@@ -97,6 +101,29 @@ ${destination}
             links.push(link);
         }
         return links;
+    }
+
+    private listUpBikeMembers():string {
+        const athletes:string[] = this.bikeMemberSheet.getBikeMembers("選手");
+        const managers:string[] = this.bikeMemberSheet.getBikeMembers("マネージャー");
+
+        if (athletes && managers){
+            const members = `
+            以下参加者です<br>\n
+            選手：<br>\n
+            ${athletes.join("<br>")}
+            <br>\n
+            <br>\n
+            マネージャー
+            ${managers.join("<br>")}
+            <br>\n
+            <br>\n
+            `
+
+            return members;
+        }else{
+            return "参加者なし";
+        }
     }
 
     parseMenu(){
