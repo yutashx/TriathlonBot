@@ -5,5 +5,5 @@ tmp
 node_modules
 Test.ts
 Deploy.ts
-env.ts
+envs.ts
 appsscript.json

@@ -22,7 +22,7 @@ class Mail{
         const msg:string = "I thought what I'd do was, I'd pretend I was one of those deaf-mutes";
 
         //console.log(subject);
-        console.log(html);
+        //console.log(html);
 
         if (this.sendFlag == "prevent"){
             console.log("sending a mail is prevented");
@@ -35,13 +35,13 @@ class Mail{
     //generate > make
 
     generateSubject():string{
-        const subject =  `[${this.tag}]${this.params.subject} `
+        const subject:string =  `[${this.tag}]${this.params.subject} `
 
         return subject;
     }
 
     generateHtml():string{
-        const html = this.makeIntroMyself() + this.makeAbstract() + this.makeContents() + this.makeFooter();
+        const html:string = this.makeIntroMyself() + this.makeAbstract() + this.makeContents() + this.makeFooter();
 
         return html;
     }
@@ -70,11 +70,11 @@ class Mail{
         const text = `
 以上です。<br>
 何か質問等がありましたら私まで連絡してください。<br>
---------------------<br>
+-------------------------<br>
 ${this.params.sender.belongs}<br>
 ${this.params.sender.grade} ${this.params.sender.name}<br>
 email: ${this.params.sender.address}<br>
---------------------<br>
+-------------------------<br>
         `;
 
         return text;
