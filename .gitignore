@@ -1,0 +1,9 @@
+common.js
+.clasp.json
+tmp
+.vscode
+node_modules
+Test.ts
+Deploy.ts
+env.ts
+appsscript.json
