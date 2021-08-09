@@ -36,8 +36,10 @@ class WeeklyMenuMail extends Mail{
 			const link:string[] = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x=>{
                 if (["ラン", "スイム", "バイク"].includes(x[3])){
                     return `<a href="${this.envs["MENUURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`
-                }else{
+                }else if (x[3] == "休み"){
                     return `<a href="${restUrl}" _target="parent">${x[3]}[${x[1]}]<a>`
+                }else{
+                    return `<a href="http://web-ext.u-aizu.ac.jp/circles/triathlon/index.html" _target="parent">${x[3]}[${x[1]}]<a>`
                 }
             }
 			);
