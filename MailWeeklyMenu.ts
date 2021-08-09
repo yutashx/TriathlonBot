@@ -33,7 +33,7 @@ class WeeklyMenuMail extends Mail{
 			const eventsEn:string[] = eventsJp.map(x => Utility.eventJp2En(x));
 			const mains:string[] = menuSessions.map(x => x.detail);
 			const dateMMDD:string[] = menuSessions.map(x => Utility.makeDataFormatMMDD(new Date(x.date)));
-			const link:string[] = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x=>{
+			const link:string = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x =>{
                 if (["ラン", "スイム", "バイク"].includes(x[3])){
                     return `<a href="${this.envs["MENUURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`
                 }else if (x[3] == "休み"){
@@ -41,8 +41,7 @@ class WeeklyMenuMail extends Mail{
                 }else{
                     return `<a href="http://web-ext.u-aizu.ac.jp/circles/triathlon/index.html" _target="parent">${x[3]}[${x[1]}]<a>`
                 }
-            }
-			);
+            }).join("、");
 
 			const sessions:string = ((dayEn, link)=>{
 				const sessions:string = `${dateSlash}(${dayEn}): ${link}`
