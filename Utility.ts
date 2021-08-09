@@ -105,4 +105,12 @@ class Utility{
     }
 
     static zip = rows=>rows[0].map((_,c)=>rows.map(row=>row[c]));
+
+    static range(start:number, stop:number, step:number=1):number[]{
+        const result:number[] = [];
+        for (var i=start; i<stop; i+=step){
+            result.push(i)
+        }
+        return result;
+    }
 }

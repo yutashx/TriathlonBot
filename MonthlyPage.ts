@@ -16,11 +16,12 @@ class MonthlyPage{
 			const dateSlash:string = Utility.makeDataFormatMMDDwithSlash(date);
 			const dayEn:string = Utility.day2En(date);
 
-			const eventsEn:string[] = menuSessions.map(x => Utility.eventJp2En(x.event));
+			const eventsJp:EventType[] = menuSessions.map(x => x.event);
+			const eventsEn:string[] = eventsJp.map(x => Utility.eventJp2En(x));
 			const mains:string[] = menuSessions.map(x => x.detail);
 			const dateMMDD:string[] = menuSessions.map(x => Utility.makeDataFormatMMDD(new Date(x.date)));
-			const link:string[] = Utility.zip([eventsEn, mains, dateMMDD]).map(x=>
-				`<a href="${this.envs["MENUURL"]}${x[0]}/${dateMMDD}.html" _target="parent">${x[1]}</a>`
+			const link:string[] = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x=>
+				`<a href="${this.envs["MENUURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`
 			);
 
 			const sessions:string = ((dayEn, link)=>{
