@@ -107,4 +107,11 @@ class Sheet{
         throw new Error(`Sheet Name: ${this.sheetName} is not found`);
         return -1;
     }
+
+    insertRightTop(rows:any[][]){
+        const sheetNo:number = this.searchSheetNumber();
+        const sheet = this.sheets[sheetNo];
+        if (rows.length == 0 || rows[0].length == 0) throw new Error(`The number of rows or columns is zero`);
+        sheet.getRange(1, 1, rows.length, rows[0].length).setValues(rows);
+    }   
 }
