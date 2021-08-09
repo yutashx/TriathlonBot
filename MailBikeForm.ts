@@ -9,12 +9,11 @@ class BikeFormMail extends Mail{
         this.envs = envs;
         const sheetId = this.envs["SHEETID"];
         const menuSheetName = this.envs["SHEET_MENU"];
-        const bikeMemberSheetName = this.envs["SHEET_BIKE"];
 
-        this.menuSheet = new Sheet(sheetId, menuSheetName);
-        this.bikeMemberSheet = new Sheet(sheetId, bikeMemberSheetName);
         try{
-            this.parseMenu();
+            const menu = new Menu(sheetId, menuSheetName);
+            this.menuSessions = menu.parseAfterNDays(2)
+            this.overwriteSendFlag(menu.sendFlag);
         }catch(e){
             this.sendFlag = "prevent";
             console.log(`Spreadsheet parsing error: ${e}`);

@@ -21,5 +21,5 @@ interface MailParams{
 type EventType = "イベント"| "ミーティング"| "バイク"| "ラン"| "スイム"|"複合練"|"休み";
 type Purpose = "練習"|"リマインダー"|"バイク練出欠確認";
 type SendFlag = "send"|"presend"|"prevent";
-type SheetColName = "Date"|"Day"|"Event"|"Detail"|"Time"|"Place"|"SendFlag"|"Name"|"ParticipantStyle"|"BikeStatus"|"Remarks";
+type SheetColName = "Date"|"Day"|"Event"|"Detail"|"Time"|"Place"|"SendFlag"|"Name"|"ParticipantStyle"|"BikeStatus"|"Car"|"Remarks";
 type ParticipantStyle = "選手"|"マネージャー";

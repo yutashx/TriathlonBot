@@ -15,7 +15,7 @@ class PracticeMail extends Mail{
         this.bikeMemberSheet = new Sheet(sheetId, bikeMemberSheetName);
         try{
             const menu = new Menu(sheetId, menuSheetName);
-            this.menuSessions = menu.parse();
+            this.menuSessions = menu.parseAfterNDays(1);
             this.overwriteSendFlag(menu.sendFlag);
         }catch(e){
             this.sendFlag = "prevent";

@@ -7,8 +7,8 @@ class Menu{
 		this.sheet = new Sheet(sheetId, sheetName);
 	}
 
-	parse():MenuSession[]{
-		const tomorrow:string = Utility.getAfterDays(1);
+	parseAfterNDays(n:number):MenuSession[]{
+		const tomorrow:string = Utility.getAfterDays(n);
 		const todayRows:string[] = this.sheet.getTheDateRows(tomorrow);
 
 		if (todayRows.length == 1){

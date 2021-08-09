@@ -88,8 +88,10 @@ class Sheet{
                 return 2;
             case "BikeStatus":
                 return 3;
-            case "Remarks":
+            case "Car":
                 return 4;
+            case "Remarks":
+                return 5;
             default:
                 return -1;
         }
