@@ -20,9 +20,13 @@ class MonthlyPage{
 			const eventsEn:string[] = eventsJp.map(x => Utility.eventJp2En(x));
 			const mains:string[] = menuSessions.map(x => x.detail);
 			const dateMMDD:string[] = menuSessions.map(x => Utility.makeDataFormatMMDD(new Date(x.date)));
-			const link:string[] = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x=>
-				`<a href="${this.envs["MENUURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`
-			);
+			const link:string[] = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x =>{
+				if (["ラン", "スイム", "バイク"].includes(x[3])){
+					return `<a href="${this.envs["MENUURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`
+				}else{
+					return `<a href="" _target="parent">${x[3]}[${x[1]}]<a>`
+				}
+			});
 
 			const sessions:string = ((dayEn, link)=>{
 				const prefix:string = dayEn == "Sat"? "<hr>\n": "";
@@ -51,7 +55,8 @@ class MonthlyPage{
 		//reformat
 		const lt = /&lt;/g;
 		const gt = /&gt;/g;
-		const reformatTemplate = template.evaluate().getContent().replace(lt, "<").replace(gt, ">");
+		const dquote = /&#34;/g;
+		const reformatTemplate = template.evaluate().getContent().replace(lt, "<").replace(gt, ">").replace(dquote, "\"");
 
 		return reformatTemplate;
 	}
