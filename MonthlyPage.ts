@@ -8,7 +8,7 @@ class MonthlyPage{
 		this.menuSheet = new Menu(this.envs["SHEETID"], this.envs["SHEET_MENU"]);
 	}
 
-	generate():string{
+	generateContents():string{
 		const targetDates = `${this.targetMonth["year"]}-${String(this.targetMonth["month"]).padStart(2, "0")}`
 		const multiDaysMenuSessions:MenuSession[][] = this.menuSheet.parseMatchedDays(targetDates);
 		const sessionTable:string[] = multiDaysMenuSessions.map(menuSessions => {
@@ -39,5 +39,19 @@ class MonthlyPage{
 		const html:string = `${header}${sessionTable}${footer}`;
 
 		return html;
+	}
+
+	generateHTML(){
+		const template = HtmlService.createTemplateFromFile("uoa_template");
+		const contents:string = this.generateContents();
+		template.contents = contents;
+		template.year = this.targetMonth["year"];
+
+		//reformat
+		const lt = /&lt;/g;
+		const gt = /&gt;/g;
+		const reformatTemplate = template.evaluate().getContent().replace(lt, "<").replace(gt, ">");
+
+		return reformatTemplate;
 	}
 }

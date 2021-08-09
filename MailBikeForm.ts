@@ -41,7 +41,7 @@ class BikeFormMail extends Mail{
         const descriptionFollowing:string = `${description}参加する方は以下の返信フォームに従って返信して下さい。`
         const bikeForm:BikeForm = new BikeForm(this.envs["SHEETID"], this.envs["SHEET_BIKE"])
         bikeForm.unlink(this.envs["SHEET_BIKE"]);
-        const formUrls:string[] = bikeForm.generate(this.params.subject, description);
+        const formUrls:string[] = bikeForm.generate(this.params.subject, descriptionFollowing);
         
         const abstract:string = `
         次回のバイク練について連絡します。<br>\n
