@@ -1,4 +1,5 @@
 interface MenuSession{
+    date: string;
     event: EventType;
     detail: string;
     time: string;
@@ -29,3 +30,4 @@ type Purpose = "練習"|"リマインダー"|"バイク練出欠確認";
 type SendFlag = "send"|"presend"|"prevent";
 type SheetColName = "Date"|"Day"|"Event"|"Detail"|"Time"|"Place"|"SendFlag"|"Name"|"ParticipantStyle"|"BikeStatus"|"Car"|"Remarks";
 type ParticipantStyle = "選手"|"マネージャー";
+type Day = "Sun"|"Mon"|"Tue"|"Wed"|"Thu"|"Fri"|"Sat"|"Error";

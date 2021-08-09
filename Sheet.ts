@@ -14,7 +14,7 @@ class Sheet{
     getTheDateRows(date:string):string[]{
         try{
             const sheetNo:number = this.searchSheetNumber();
-            const rows:string[] = this.searchRows(sheetNo, "Date", date);
+            const rows:string[] = this.searchRows(sheetNo, "Date", date, Operator.equal); //date="YYYY-MM-DD"
 
             return rows;
         }catch(e){
@@ -27,7 +27,7 @@ class Sheet{
     getBikeMembers(style:ParticipantStyle):string[]{
         try{
             const sheetNo:number = this.searchSheetNumber();
-            const rows = this.searchRows(sheetNo, "ParticipantStyle", style as string);
+            const rows = this.searchRows(sheetNo, "ParticipantStyle", style as string, Operator.equal);
             const names = rows.map(x => x[this.getColNum("Name")]);
 
             return names;
@@ -38,7 +38,7 @@ class Sheet{
         }
     }
 
-    searchRows(sheetNo:number, colName:SheetColName, item:string){
+    searchRows(sheetNo:number, colName:SheetColName, item:string, op){
         const sheet = this.sheets[sheetNo];
         const range = sheet.getDataRange();
         const lastRow = range.getLastRow();
@@ -50,7 +50,7 @@ class Sheet{
         for (var i = 0; i < lastRow; i++){
             const lookUpItem = dataset[i][colNum];
             const formatLookUpItem:string = colName == "Date" && lookUpItem?  Utility.makeDateFormat(lookUpItem): lookUpItem;
-            if (formatLookUpItem == item){
+            if (op(formatLookUpItem, item)){
                 matchedItems.push(dataset[i]);
             }
         }

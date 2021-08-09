@@ -61,14 +61,14 @@ class Utility{
         return formatted;
     }
 
-    static getTimeFormat(time):string{
+    static getTimeFormat(time:Date):string{
         const hour = String(time.getHours()).padStart(2, "0");
         const min = String(time.getMinutes()).padStart(2, "0");
         const formatTime = `${hour}:${min}`;
         
         return formatTime;
     }
-    
+
     static eventJp2En(event:EventType):string{
         switch(event){
             case "スイム":
@@ -81,4 +81,28 @@ class Utility{
                 return "";
         }
     }
+
+    static day2En(date:Date):Day{
+        const numDay:number = date.getDay();
+        switch(numDay){
+            case 0:
+                return "Sun";
+            case 1:
+                return "Mon";
+            case 2:
+                return "Tue";
+            case 3:
+                return "Wed";
+            case 4:
+                return "Thu";
+            case 5:
+                return "Fri";
+            case 6:
+                return "Sat";
+            default:
+                return "Error";
+        }
+    }
+
+    static zip = rows=>rows[0].map((_,c)=>rows.map(row=>row[c]));
 }

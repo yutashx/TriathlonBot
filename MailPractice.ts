@@ -1,8 +1,7 @@
 class PracticeMail extends Mail{
-    menuSheet:Sheet;
-    bikeMemberSheet:Sheet;
     menuSessions:MenuSession[] = [];
-    envs;
+    bikeMembers:string;
+    envs:{[key:string]: string};
 
     constructor(tag: string, purpose: Purpose, params: MailParams, sendFlag: SendFlag, envs: any, others?:string[]){
         super(tag, purpose, params, sendFlag, others);
@@ -11,12 +10,12 @@ class PracticeMail extends Mail{
         const menuSheetName = this.envs["SHEET_MENU"];
         const bikeMemberSheetName = this.envs["SHEET_BIKE"];
 
-        this.menuSheet = new Sheet(sheetId, menuSheetName);
-        this.bikeMemberSheet = new Sheet(sheetId, bikeMemberSheetName);
         try{
-            const menu = new Menu(sheetId, menuSheetName);
+            const menu:Menu = new Menu(sheetId, menuSheetName);
             this.menuSessions = menu.parseAfterNDays(1);
             this.overwriteSendFlag(menu.sendFlag);
+            const bikeMembers:Menu = new Menu(sheetId, bikeMemberSheetName);
+            this.bikeMembers = bikeMembers.listUpBikeMembers();
         }catch(e){
             this.sendFlag = "prevent";
             console.log(`Spreadsheet parsing error: ${e}`);
@@ -66,7 +65,7 @@ class PracticeMail extends Mail{
             var details:string[] = [];
             if (links.length == this.menuSessions.length){
                 for (var i=0; i<links.length; i++){
-                    const bikeMembers:string = this.menuSessions[i].event == "バイク"? this.listUpBikeMembers(): "";
+                    const bikeMembers:string = this.menuSessions[i].event == "バイク"? this.bikeMembers: "";
                     const meetingPlace:string = this.menuSessions[i].event == "バイク"? "サークル棟": this.menuSessions[i].place;
                     const destination:string = this.menuSessions[i].event == "バイク"? `行き先：  ${this.menuSessions[i].place}<br>\n`: ``;
                     const detail = `
@@ -103,29 +102,6 @@ ${destination}
             links.push(link);
         }
         return links;
-    }
-
-    private listUpBikeMembers():string {
-        const athletes:string[] = this.bikeMemberSheet.getBikeMembers("選手");
-        const managers:string[] = this.bikeMemberSheet.getBikeMembers("マネージャー");
-
-        if (athletes && managers){
-            const members = `
-            以下バイク練の参加者です<br>\n
-            選手：<br>\n
-            ${athletes.join("<br>")}
-            <br>\n
-            <br>\n
-            マネージャー：<br>\n
-            ${managers.join("<br>")}
-            <br>\n
-            <br>\n
-            `
-
-            return members;
-        }else{
-            return "参加者なし";
-        }
     }
 
     private overwriteSendFlag(sendFlag){
