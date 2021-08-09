@@ -4,7 +4,6 @@ tmp
 .vscode
 node_modules
 Test.ts
-Deploy.ts
 Trigger.ts
 envs.ts
 appsscript.json
