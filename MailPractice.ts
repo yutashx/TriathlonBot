@@ -111,7 +111,7 @@ ${destination}
 
         if (athletes && managers){
             const members = `
-            以下参加者です<br>\n
+            以下バイク練の参加者です<br>\n
             選手：<br>\n
             ${athletes.join("<br>")}
             <br>\n
