@@ -1,4 +1,4 @@
-class PracticeMail extends Mail{
+class BikeFormMail extends Mail{
     menuSheet:Sheet;
     bikeMemberSheet:Sheet;
     menuSessions:MenuSession[] = [];
@@ -14,9 +14,7 @@ class PracticeMail extends Mail{
         this.menuSheet = new Sheet(sheetId, menuSheetName);
         this.bikeMemberSheet = new Sheet(sheetId, bikeMemberSheetName);
         try{
-            const menu = new Menu(sheetId, menuSheetName);
-            this.menuSessions = menu.parse();
-            this.overwriteSendFlag(menu.sendFlag);
+            this.parseMenu();
         }catch(e){
             this.sendFlag = "prevent";
             console.log(`Spreadsheet parsing error: ${e}`);
@@ -125,6 +123,33 @@ ${destination}
             return members;
         }else{
             return "参加者なし";
+        }
+    }
+
+    parseMenu(){
+        const tomorrow:string = Utility.getAfterDays(1);
+        const todayRows:string[] = this.menuSheet.getTheDateRows(tomorrow);
+
+        if (todayRows.length == 1){
+            const events:string[] = todayRows[0][this.menuSheet.getColNum("Event")].split("/");
+            const details:string[] = todayRows[0][this.menuSheet.getColNum("Detail")].split("/");
+            const times:string[] = todayRows[0][this.menuSheet.getColNum("Time")].split("/");
+            const places:string[] = todayRows[0][this.menuSheet.getColNum("Place")].split("/");
+            const sendFlag:string = todayRows[0][this.menuSheet.getColNum("SendFlag")];
+            this.overwriteSendFlag(sendFlag);
+
+            const splitedNums = [events, details, times, places].map(x => x.length);
+            // check all columns contains the same number
+            if (splitedNums.every(x => x == splitedNums[0])){
+                for (var i=0; i<splitedNums[0]; i++){
+                    const session:MenuSession = {event: events[i] as EventType, detail: details[i], time: times[i], place: places[i]};
+                    this.menuSessions.push(session);
+                }
+            }else{
+                throw new Error(`Expected all columns has the same size ${splitedNums[0]}, but event: ${splitedNums[0]}, detail: ${splitedNums[1]}, time: ${splitedNums[2]}, place: ${splitedNums[3]}.`);
+            }
+        }else{
+            throw new Error(`Expected 1 row, but get ${todayRows.length}.`)
         }
     }
 
