@@ -116,7 +116,7 @@ ${destination}
             ${athletes.join("<br>")}
             <br>\n
             <br>\n
-            マネージャー
+            マネージャー：<br>\n
             ${managers.join("<br>")}
             <br>\n
             <br>\n

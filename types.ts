@@ -18,6 +18,12 @@ interface MailParams{
     to_address: string[];
 }
 
+interface BikeFormParam{
+    sendNDaysAfter: number; //send an email for N days after bike practice
+    deadlineNDayAfter: number; //deadline day is N days after today.
+    deadlineTime: string; //HH:MM
+}
+
 type EventType = "イベント"| "ミーティング"| "バイク"| "ラン"| "スイム"|"複合練"|"休み";
 type Purpose = "練習"|"リマインダー"|"バイク練出欠確認";
 type SendFlag = "send"|"presend"|"prevent";

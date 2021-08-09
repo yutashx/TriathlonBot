@@ -36,10 +36,27 @@ class Utility{
         return dayFormat;
     }
 
+    static getAfterDaysMMDDwithSlash(n:number):string{
+        const today:Date = new Date();
+        const afterNDays:Date = new Date(today);
+        afterNDays.setDate(afterNDays.getDate() + n);
+        const dayFormat:string = this.makeDataFormatMMDDwithSlash(afterNDays);
+
+        return dayFormat;
+    }
+
     static makeDataFormatMMDD(day:Date):string{
         const month = String(day.getMonth()+ 1).padStart(2, "0");
         const date = String(day.getDate()).padStart(2, "0");
         const formatted = `${month}${date}`;
+
+        return formatted;
+    }
+
+    static makeDataFormatMMDDwithSlash(day:Date):string{
+        const month = String(day.getMonth()+ 1).padStart(2, "0");
+        const date = String(day.getDate()).padStart(2, "0");
+        const formatted = `${month}/${date}`;
 
         return formatted;
     }
