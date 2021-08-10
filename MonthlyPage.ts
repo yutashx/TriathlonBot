@@ -29,8 +29,8 @@ class MonthlyPage{
 			});
 
 			const sessions:string = ((dayEn, link)=>{
-				const prefix:string = dayEn == "Sat"? "<hr>\n": "";
-				const suffix:string = dayEn == "Sun"? "<hr>\n\n": "";
+				const prefix:string = "";
+				const suffix:string = dayEn == "Sat"? "<hr>\n\n": "";
 				const sessions:string = `${prefix}<li>${dateSlash}(${dayEn}): ${link}</li>\n${suffix}`
 
 				return sessions;
@@ -39,9 +39,9 @@ class MonthlyPage{
 			return sessions;
 		})
 
-		const header:string = `<div id=\"contents\">\n<h3>"${this.targetMonth["year"]} 部活内容</h3>\n<ul>\n<h4> ${this.targetMonth["year"]}年${this.targetMonth["month"]}月</h4>\n<hr>\n<style></style>\n<hr>\n`;
+		const header:string = `<div id=\"contents\">\n<h3>${this.targetMonth["year"]} 部活内容</h3>\n<ul>\n<h4>${this.targetMonth["year"]}年${this.targetMonth["month"]}月</h4>\n<hr>\n<style></style>\n<hr>\n`;
 		const footer:string = `<hr>\n\n</ul>\n</div>`
-		const html:string = `${header}${sessionTable}${footer}`;
+		const html:string = `${header}${sessionTable.join("\n")}${footer}`;
 
 		return html;
 	}
