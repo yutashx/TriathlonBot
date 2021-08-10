@@ -16,6 +16,7 @@ class WeeklyMenuMail extends Mail{
             if (day != "Sun") throw new Error(`This script should be executed on Sunday, Today is ${day}`)
             const menu = new Menu(sheetId, menuSheetName);
             this.multiDaysMenuSessions = Utility.range(0, 7).map(x => menu.parseAfterNDays(x))
+            this.overwriteSendFlag(sendFlag);
         }catch(e){
             this.overwriteSendFlag("prevent");
             console.log(`Spreadsheet parsing error: ${e}`);
