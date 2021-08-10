@@ -82,7 +82,7 @@ class Mail{
     }
 
     protected overwriteSendFlag(sendFlag){
-        const preventFlags = ["1", 1, "prevent", "Prevent"];
+        const preventFlags = ["1", 1, "prevent", "Prevent", "daily", "all"];
         if (preventFlags.includes(sendFlag)){
             this.sendFlag = "prevent";
         }

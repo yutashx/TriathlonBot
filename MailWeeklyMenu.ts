@@ -66,4 +66,11 @@ class WeeklyMenuMail extends Mail{
         return abstract;
     }
 
+    protected overwriteSendFlag(sendFlag){
+        const preventFlags = ["2", 2, "prevent", "Prevent", "weekly", "all"];
+        if (preventFlags.includes(sendFlag)){
+            this.sendFlag = "prevent";
+        }
+    }
+
 }
