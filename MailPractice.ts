@@ -22,7 +22,7 @@ class PracticeMail extends Mail{
         }
     }
 
-    makeAbstract():string{
+    protected makeAbstract():string{
         const eventsSummary:string = this.menuSessions.map(x => x.event).join("/");
         const eventMain = ()=>{
             var linkedMains:string[] = [];
@@ -58,7 +58,7 @@ class PracticeMail extends Mail{
         return abstract;
     }
 
-    makeContents():string{
+    protected makeContents():string{
         const dscrpt:string = "以下詳細です。";
         const menuDetails = ():string =>{
             const links:string[] = this.makeLinks();
@@ -69,14 +69,14 @@ class PracticeMail extends Mail{
                     const meetingPlace:string = this.menuSessions[i].event == "バイク"? "サークル棟": this.menuSessions[i].place;
                     const destination:string = this.menuSessions[i].event == "バイク"? `行き先：  ${this.menuSessions[i].place}<br>\n`: ``;
                     const detail = `
-${bikeMembers + "<br>\n"}
--------------------------<br>\n
-種目：    ${this.menuSessions[i].event}<br>\n
-メイン：   ${links[i]}<br>\n
-集合時間： ${this.menuSessions[i].time}<br>\n
-集合場所： ${meetingPlace}<br>\n
-${destination}
---------------------------<br>\n
+                    ${bikeMembers + "<br>\n"}
+                    -------------------------<br>\n
+                    種目：    ${this.menuSessions[i].event}<br>\n
+                    メイン：   ${links[i]}<br>\n
+                    集合時間： ${this.menuSessions[i].time}<br>\n
+                    集合場所： ${meetingPlace}<br>\n
+                    ${destination}
+                    --------------------------<br>\n
                     `
                     details.push(detail);
                 }
@@ -94,7 +94,7 @@ ${destination}
         return contents;
     }
 
-    makeLinks():string[]{
+    protected makeLinks():string[]{
         var links:string[] = [];
         for (var i=0; i<this.menuSessions.length; i++){
             const enEvent:string = Utility.eventJp2En(this.menuSessions[i].event);
@@ -102,12 +102,5 @@ ${destination}
             links.push(link);
         }
         return links;
-    }
-
-    private overwriteSendFlag(sendFlag){
-        const preventFlags = ["1", 1, "prevent", "Prevent"];
-        if (preventFlags.includes(sendFlag)){
-            this.sendFlag = "prevent";
-        }
     }
 }

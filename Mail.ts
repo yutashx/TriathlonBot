@@ -13,7 +13,7 @@ class Mail{
         this.others = others;
     }
 
-    send(){
+    public send(){
         const subject:string = this.generateSubject();
         const html:string = this.generateHtml();
         const senderName:string = this.params.sender.name;
@@ -34,50 +34,57 @@ class Mail{
 
     //generate > make
 
-    generateSubject():string{
+    private generateSubject():string{
         const prefix:string = this.sendFlag == "presend"? `[Presend]`: ``;
         const subject:string =  prefix + `[${this.tag}]${this.params.subject} `
 
         return subject;
     }
 
-    generateHtml():string{
+    private generateHtml():string{
         const html:string = this.makeIntroMyself() + this.makeAbstract() + this.makeContents() + this.makeFooter();
 
         return html;
     }
 
 
-    makeIntroMyself():string{
+    private makeIntroMyself():string{
         const intro = `${this.params.sender.grade}の${this.params.sender.name}です。<br>`;
 
         return intro;
     }
 
-    makeAbstract():string{
+    protected makeAbstract():string{
         const abstract = "<br>";
 
         return abstract;
     }
 
-    makeContents():string{
+    protected makeContents():string{
         const contents = "<br>";
 
         return contents;
     }
 
-    makeFooter():String{
+    protected makeFooter():String{
         //indent is irregular for space
         const text = `
-以上です。<br>
-何か質問等がありましたら私まで連絡してください。<br>
--------------------------<br>
-${this.params.sender.belongs}<br>
-${this.params.sender.grade} ${this.params.sender.name}<br>
-email: ${this.params.sender.address}<br>
--------------------------<br>
+        以上です。<br>
+        何か質問等がありましたら私まで連絡してください。<br>
+        -------------------------<br>
+        ${this.params.sender.belongs}<br>
+        ${this.params.sender.grade} ${this.params.sender.name}<br>
+        email: ${this.params.sender.address}<br>
+        -------------------------<br>
         `;
 
         return text;
+    }
+
+    protected overwriteSendFlag(sendFlag){
+        const preventFlags = ["1", 1, "prevent", "Prevent"];
+        if (preventFlags.includes(sendFlag)){
+            this.sendFlag = "prevent";
+        }
     }
 }

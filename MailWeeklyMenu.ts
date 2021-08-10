@@ -23,7 +23,7 @@ class WeeklyMenuMail extends Mail{
         }
     }
 
-    makeAbstract():string{
+    protected makeAbstract():string{
 		const weeklySessions:string[] = this.multiDaysMenuSessions.map(menuSessions => {
 			const date:Date = new Date(menuSessions[0].date); 
 			const dateSlash:string = Utility.makeDataFormatMMDDwithSlash(date);
@@ -66,10 +66,4 @@ class WeeklyMenuMail extends Mail{
         return abstract;
     }
 
-    private overwriteSendFlag(sendFlag){
-        const preventFlags = ["1", 1, "prevent", "Prevent"];
-        if (preventFlags.includes(sendFlag)){
-            this.sendFlag = "prevent";
-        }
-    }
 }

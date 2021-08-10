@@ -29,7 +29,7 @@ class BikeFormMail extends Mail{
         }
     }
 
-    makeAbstract():string{
+    protected makeAbstract():string{
         const bikeSessionIndex:number[] = this.menuSessions.map((x, index) =>{
             if (x.event == "バイク") return index;
             else return -1;
@@ -51,12 +51,5 @@ class BikeFormMail extends Mail{
         `
 
         return abstract;
-    }
-
-    private overwriteSendFlag(sendFlag){
-        const preventFlags = ["1", 1, "prevent", "Prevent"];
-        if (preventFlags.includes(sendFlag)){
-            this.sendFlag = "prevent";
-        }
     }
 }
