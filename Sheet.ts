@@ -11,7 +11,7 @@ class Sheet{
         this.sheets = this.spreadsheet.getSheets();
     }
 
-    getTheDateRows(date:string):string[]{
+    public getTheDateRows(date:string):string[]{
         try{
             const sheetNo:number = this.searchSheetNumber();
             const rows:string[] = this.searchRows(sheetNo, "Date", date, Operator.equal); //date="YYYY-MM-DD"
@@ -24,7 +24,7 @@ class Sheet{
         }
     }
 
-    getBikeMembers(style:ParticipantStyle):string[]{
+    public getBikeMembers(style:ParticipantStyle):string[]{
         try{
             const sheetNo:number = this.searchSheetNumber();
             const rows = this.searchRows(sheetNo, "ParticipantStyle", style as string, Operator.equal);
@@ -38,7 +38,7 @@ class Sheet{
         }
     }
 
-    searchRows(sheetNo:number, colName:SheetColName, item:string, op){
+    public searchRows(sheetNo:number, colName:SheetColName, item:string, op){
         const sheet = this.sheets[sheetNo];
         const range = sheet.getDataRange();
         const lastRow = range.getLastRow();
@@ -63,7 +63,7 @@ class Sheet{
         }
     }
 
-    getColNum(colName: SheetColName){
+    public getColNum(colName: SheetColName){
         switch(colName){
             //Menu Sheet
             case "Date":
@@ -97,7 +97,7 @@ class Sheet{
         }
     }
 
-    searchSheetNumber():number{
+    public searchSheetNumber():number{
         for (var i = 0; i < this.sheets.length; i++){
             if (this.sheets[i].getSheetName().includes(this.sheetName)){
                 console.log(`Sheet Name: ${this.sheetName} is found as No.${i}`);
@@ -108,7 +108,7 @@ class Sheet{
         return -1;
     }
 
-    insertRightTop(rows:any[][]){
+    public insertRightTop(rows:any[][]){
         const sheetNo:number = this.searchSheetNumber();
         const sheet = this.sheets[sheetNo];
         if (rows.length == 0 || rows[0].length == 0) throw new Error(`The number of rows or columns is zero`);

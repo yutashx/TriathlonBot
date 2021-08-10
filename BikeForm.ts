@@ -5,7 +5,7 @@ class BikeForm{
 		this.sheet = sheet;
 	}
 
-	generate(subject:string, description:string):string[]{
+	public generate(subject:string, description:string):string[]{
 		const ss = this.sheet.spreadsheet;
 		const form = FormApp.create(subject)
 		.setDescription(description)
@@ -50,7 +50,7 @@ class BikeForm{
 		return [publishUrl, editUrl]
 	}
 
-	unlink(sheetName:string):boolean{
+	public unlink(sheetName:string):boolean{
 		const sheets = this.sheet.sheets; 
 		const unlinkStatus:boolean = sheets.map(x =>{
 			if (x.getSheetName().includes(sheetName)){

@@ -6,7 +6,7 @@ class Menu{
 		this.sheet = new Sheet(sheetId, sheetName);
 	}
 
-	parseMenu(rows:string[]):MenuSession[]{
+	public parseMenu(rows:string[]):MenuSession[]{
 		if (rows.length == 1){
 			const date:string = rows[0][this.sheet.getColNum("Date")];
 			const events:string[] = rows[0][this.sheet.getColNum("Event")].split("/");
@@ -37,7 +37,7 @@ class Menu{
 		}
 	}
 
-	parseAfterNDays(n:number):MenuSession[]{
+	public parseAfterNDays(n:number):MenuSession[]{
 		const tomorrow:string = Utility.getAfterDays(n);
 		const todayRows:string[] = this.sheet.getTheDateRows(tomorrow);
 		const menuSessions:MenuSession[] = this.parseMenu(todayRows);
@@ -45,7 +45,7 @@ class Menu{
 		return menuSessions;
 	}
 
-	parseMatchedDays(targetDates:string):MenuSession[][]{
+	public parseMatchedDays(targetDates:string):MenuSession[][]{
 		const sheetNo:number = this.sheet.searchSheetNumber();
 		const dates:string[] = this.sheet.searchRows(sheetNo, "Date", targetDates, Operator.partiallyMatch);
 		const multiDaysMenuSessions = dates.map(x => this.parseMenu([x]));
@@ -53,7 +53,7 @@ class Menu{
 		return multiDaysMenuSessions;
 	}
 
-	listUpBikeMembers():string {
+	public listUpBikeMembers():string {
 		//for bike sheet
 		const athletes:string[] = this.sheet.getBikeMembers("選手");
 		const managers:string[] = this.sheet.getBikeMembers("マネージャー");

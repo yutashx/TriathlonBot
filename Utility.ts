@@ -2,14 +2,14 @@ class Utility{
     constructor(){
     }
 
-    static getToday():string{
+    public static getToday():string{
         const today:Date = new Date();
         const todayFormat:string = this.makeDateFormat(today);
 
         return todayFormat;
     }
 
-    static getAfterDays(n:number):string{
+    public static getAfterDays(n:number):string{
         const today:Date = new Date();
         const afterNDays:Date = new Date(today);
         afterNDays.setDate(afterNDays.getDate() + n);
@@ -18,7 +18,7 @@ class Utility{
         return dayFormat;
     }
 
-    static makeDateFormat(day:Date):string{
+    public static makeDateFormat(day:Date):string{
         const year = day.getFullYear();
         const month = String(day.getMonth()+ 1).padStart(2, "0");
         const date = String(day.getDate()).padStart(2, "0");
@@ -27,7 +27,7 @@ class Utility{
         return formatted;
     }
 
-    static getAfterDaysMMDD(n:number):string{
+    public static getAfterDaysMMDD(n:number):string{
         const today:Date = new Date();
         const afterNDays:Date = new Date(today);
         afterNDays.setDate(afterNDays.getDate() + n);
@@ -36,7 +36,7 @@ class Utility{
         return dayFormat;
     }
 
-    static getAfterDaysMMDDwithSlash(n:number):string{
+    public static getAfterDaysMMDDwithSlash(n:number):string{
         const today:Date = new Date();
         const afterNDays:Date = new Date(today);
         afterNDays.setDate(afterNDays.getDate() + n);
@@ -45,7 +45,7 @@ class Utility{
         return dayFormat;
     }
 
-    static makeDataFormatMMDD(day:Date):string{
+    public static makeDataFormatMMDD(day:Date):string{
         const month = String(day.getMonth()+ 1).padStart(2, "0");
         const date = String(day.getDate()).padStart(2, "0");
         const formatted = `${month}${date}`;
@@ -53,7 +53,7 @@ class Utility{
         return formatted;
     }
 
-    static makeDataFormatMMDDwithSlash(day:Date):string{
+    public static makeDataFormatMMDDwithSlash(day:Date):string{
         const month = String(day.getMonth()+ 1).padStart(2, "0");
         const date = String(day.getDate()).padStart(2, "0");
         const formatted = `${month}/${date}`;
@@ -61,7 +61,7 @@ class Utility{
         return formatted;
     }
 
-    static getTimeFormat(time:Date):string{
+    public static getTimeFormat(time:Date):string{
         const hour = String(time.getHours()).padStart(2, "0");
         const min = String(time.getMinutes()).padStart(2, "0");
         const formatTime = `${hour}:${min}`;
@@ -69,7 +69,7 @@ class Utility{
         return formatTime;
     }
 
-    static eventJp2En(event:EventType):string{
+    public static eventJp2En(event:EventType):string{
         switch(event){
             case "スイム":
                 return "swim";
@@ -82,7 +82,7 @@ class Utility{
         }
     }
 
-    static day2En(date:Date):Day{
+    public static day2En(date:Date):Day{
         const numDay:number = date.getDay();
         switch(numDay){
             case 0:
@@ -104,9 +104,9 @@ class Utility{
         }
     }
 
-    static zip = rows=>rows[0].map((_,c)=>rows.map(row=>row[c]));
+    public static zip = rows=>rows[0].map((_,c)=>rows.map(row=>row[c]));
 
-    static range(start:number, stop:number, step:number=1):number[]{
+    public static range(start:number, stop:number, step:number=1):number[]{
         const result:number[] = [];
         for (var i=start; i<stop; i+=step){
             result.push(i)

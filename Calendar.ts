@@ -4,7 +4,7 @@ class CalendarClass{
 		this.calId = calId;
 	}
 
-	getCalendar(startDate:Date, endDate:Date){
+	public getCalendar(startDate:Date, endDate:Date){
 		const cal = CalendarApp.getCalendarById(this.calId);
 		const eventDays = cal.getEvents(startDate, endDate).map(x => [x.getStartTime(), x.getTitle()]);
 

@@ -8,7 +8,7 @@ class MonthlyPage{
 		this.menuSheet = new Menu(this.envs["SHEETID"], this.envs["SHEET_MENU"]);
 	}
 
-	generateContents():string{
+	public generateContents():string{
 		const targetDates = `${this.targetMonth["year"]}-${String(this.targetMonth["month"]).padStart(2, "0")}`
 		const multiDaysMenuSessions:MenuSession[][] = this.menuSheet.parseMatchedDays(targetDates);
 		const sessionTable:string[] = multiDaysMenuSessions.map(menuSessions => {
@@ -46,7 +46,7 @@ class MonthlyPage{
 		return html;
 	}
 
-	generateHTML(){
+	public generateHTML(){
 		const template = HtmlService.createTemplateFromFile("uoa_template");
 		const contents:string = this.generateContents();
 		template.contents = contents;
