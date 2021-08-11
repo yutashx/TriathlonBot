@@ -68,7 +68,7 @@ class PracticeMail extends Mail{
                     const bikeMembers:string = this.menuSessions[i].event == "バイク"? this.bikeMembers: "";
                     const meetingPlace:string = this.menuSessions[i].event == "バイク"? "サークル棟": this.menuSessions[i].place;
                     const destination:string = this.menuSessions[i].event == "バイク"? `行き先：  ${this.menuSessions[i].place}<br>\n`: ``;
-                    const wbgt:string= !["プール"].includes(this.menuSessions[i].place) ? `<a href="https://www.wbgt.env.go.jp/wbgt.php">暑さ指数</a>： <a href="https://www.wbgt.env.go.jp/graph_ref_td.php?region=02&prefecture=36&point=36361">${this.menuSessions[i].wbgt}</a><br>\n`: "";
+                    const wbgt:string= !["プール"].includes(this.menuSessions[i].place) ? `<a href="https://www.wbgt.env.go.jp/wbgt.php">暑さ指数</a>： <a href="https://www.wbgt.env.go.jp/graph_ref_td.php?region=02&prefecture=36&point=36361">${this.menuSessions[i].wbgt}</a>（予報値）<br>\n`: "";
 
                     const detail = `
                     ${bikeMembers + "<br>\n"}
