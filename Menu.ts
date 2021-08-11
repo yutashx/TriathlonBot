@@ -20,20 +20,19 @@ class Menu{
 			// check all columns contains the same number
 			if (splitedNums.every(x => x == splitedNums[0])){
 				const sessions: MenuSession[] = [];
+				const wbgt:Wbgt = new Wbgt();
+				wbgt.parse();
 				for (var i=0; i<splitedNums[0]; i++){
-					const session:MenuSession = {date: date, event: events[i] as EventType, detail: details[i], time: times[i], place: places[i]};
+					const wbgtVal:number = wbgt.search(new Date(date), times[i]);
+					const session:MenuSession = {date: date, event: events[i] as EventType, detail: details[i], time: times[i], place: places[i], wbgt: wbgtVal};
 					sessions.push(session);
 				}
 				return sessions;
 			}else{
 				throw new Error(`Expected all columns has the same size ${splitedNums[0]}, but event: ${splitedNums[0]}, detail: ${splitedNums[1]}, time: ${splitedNums[2]}, place: ${splitedNums[3]}.`);
-
-				return [];
 			}
 		}else{
 			throw new Error(`Expected 1 row, but get ${rows.length}.`)
-
-			return[];
 		}
 	}
 

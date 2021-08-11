@@ -4,6 +4,7 @@ interface MenuSession{
     detail: string;
     time: string;
     place:string;
+    wbgt:number;
 }
 
 interface Member{
@@ -23,6 +24,12 @@ interface BikeFormParam{
     sendNDaysAfter: number; //send an email for N days after bike practice
     deadlineNDayAfter: number; //deadline day is N days after today.
     deadlineTime: string; //HH:MM
+}
+
+interface wbgt{
+    date: Date;
+    time: string;
+    wbgt: number;
 }
 
 type EventType = "イベント"| "ミーティング"| "バイク"| "ラン"| "スイム"|"複合練"|"休み";
