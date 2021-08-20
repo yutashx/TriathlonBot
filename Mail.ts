@@ -14,19 +14,18 @@ class Mail{
     }
 
     public send(){
-        const subject:string = this.generateSubject();
-        const html:string = this.generateHtml();
-        const senderName:string = this.params.sender.name;
-        const to_address:string = this.params.to_address.join(",");
-        const options:{[key: string]: string} = {name: senderName, htmlBody: html};
-        const msg:string = "I thought what I'd do was, I'd pretend I was one of those deaf-mutes";
-
-        //console.log(subject);
-        //console.log(html);
-
         if (this.sendFlag == "prevent"){
             console.log("sending a mail is prevented");
         }else{
+            const subject:string = this.generateSubject();
+            const html:string = this.generateHtml();
+            const senderName:string = this.params.sender.name;
+            const to_address:string = this.params.to_address.join(",");
+            const options:{[key: string]: string} = {name: senderName, htmlBody: html};
+            const msg:string = "I thought what I'd do was, I'd pretend I was one of those deaf-mutes";
+
+            //console.log(subject);
+            //console.log(html);
             GmailApp.sendEmail(to_address, subject, msg, options);
             console.log(`[${this.sendFlag}] A mail is sent for ${this.purpose} from ${senderName}: ${this.params.sender.address} to ${to_address}`);
         }

@@ -26,12 +26,17 @@ class Wbgt{
 		const timeDiff:number[] = matchDate.map(x => Math.abs(Number(time.split(":")[0]) - x.date.getHours()) % 24)
 		const min:number = Math.min(...timeDiff);
 		try{
-			const matchWbgt:wbgt = matchDate[timeDiff.indexOf(min)];
-			const wbgtVal:number = matchWbgt.wbgt;
+			if (timeDiff.length > 0){
+				const matchWbgt:wbgt = matchDate[timeDiff.indexOf(min)];
+				const wbgtVal:number = matchWbgt.wbgt;
+				return wbgtVal;
+			}else{
+				return -1;
+			}
 
-			return wbgtVal;
 		}catch (e){
 			console.log(`unexpected error in Wbgt search: ${e}`)
+			return -1;
 		}
 	}
 }

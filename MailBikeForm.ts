@@ -34,7 +34,7 @@ class BikeFormMail extends Mail{
             if (x.event == "バイク") return index;
             else return -1;
         }).filter(x => x != -1);
-        const bikeSession:MenuSession = bikeSessionIndex.length == 1? this.menuSessions[bikeSessionIndex[0]]: {date: "", event: "休み", detail: "", time: "", place: ""};
+        const bikeSession:MenuSession = bikeSessionIndex.length == 1? this.menuSessions[bikeSessionIndex[0]]: null;
         const deadlineDay:string = Utility.getAfterDaysMMDDwithSlash(this.bikeFormParam.deadlineNDayAfter);
         const deadlineTime:string = this.bikeFormParam.deadlineTime;
         const description:string = `次回のバイク練は${bikeSession.place}に行きます。返信期限は${deadlineDay}の${deadlineTime}です。それに伴い、選手とマネージャーの出欠確認をいたします。`;
