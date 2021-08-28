@@ -46,13 +46,13 @@ class PracticeMail extends Mail{
                     return "";
             }
         }).join("<br>\n");
-        const dscrpt = this.others? this.others[0]: "";
 
         const abstract:string = `
         明日の${eventsSummary}練について連絡します。<br>\n
         明日の${eventMain()}をします。<br>\n
         ${uniqDscrpt}<br>\n
-        ${dscrpt}<br>\n
+        体温の記録をスムーズに行うために自分で体温を測れる方は<a href="https://docs.google.com/forms/d/e/1FAIpQLSca2UAGDJ7aidk0iK5mU5kp5iDU1kXksnOldjjWyNyczMgdJw/viewform">フォーム</a>にて練習前に体温の測定、入力をお願いします。<br>\n
+        <br>\n
         `
 
         return abstract;

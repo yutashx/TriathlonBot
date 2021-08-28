@@ -37,7 +37,7 @@ class BikeFormMail extends Mail{
         const bikeSession:MenuSession = bikeSessionIndex.length == 1? this.menuSessions[bikeSessionIndex[0]]: null;
         const deadlineDay:string = Utility.getAfterDaysMMDDwithSlash(this.bikeFormParam.deadlineNDayAfter);
         const deadlineTime:string = this.bikeFormParam.deadlineTime;
-        const description:string = `次回のバイク練は${bikeSession.place}に行きます。返信期限は${deadlineDay}の${deadlineTime}です。それに伴い、選手とマネージャーの出欠確認をいたします。`;
+        const description:string = `${Utility.makeDataFormatMMDDwithSlash(new Date(bikeSession.date))}のバイク練は${bikeSession.place}に行きます。返信期限は${deadlineDay}の${deadlineTime}です。それに伴い、選手とマネージャーの出欠確認をいたします。`;
         const descriptionFollowing:string = `${description}参加する方は以下の返信フォームに従って返信して下さい。`
         const bikeForm:BikeForm = new BikeForm(this.envs["SHEETID"], this.envs["SHEET_BIKE"])
         bikeForm.unlink(this.envs["SHEET_BIKE"]);
