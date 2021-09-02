@@ -2,6 +2,7 @@ class PracticeMail extends Mail{
     menuSessions:MenuSession[] = [];
     bikeMembers:string;
     envs:{[key:string]: string};
+    sheet:Sheet;
 
     constructor(tag: string, purpose: Purpose, params: MailParams, sendFlag: SendFlag, envs: any, others?:string[]){
         super(tag, purpose, params, sendFlag, others);
@@ -12,6 +13,7 @@ class PracticeMail extends Mail{
 
         try{
             const menu:Menu = new Menu(sheetId, menuSheetName);
+            this.sheet = new Sheet(sheetId, menuSheetName);
             this.menuSessions = menu.parseAfterNDays(1);
             this.overwriteSendFlag(menu.sendFlag);
             const bikeMembers:Menu = new Menu(sheetId, bikeMemberSheetName);
@@ -89,7 +91,12 @@ class PracticeMail extends Mail{
                 return "the number of links and sessions are unmatched";
             }
         }
+        const commentColNo:number = this.sheet.getColNum("Comment");
+        const row:string[] = this.sheet.getTheDateRows(Utility.makeDateFormat(new Date(this.menuSessions[0].date)));
+        const comment:string = row[0][commentColNo];
+
         const contents:string = `
+        ${comment}\n<br><br>
         ${dscrpt}\n<br>
         ${menuDetails()}\n<br>
         `

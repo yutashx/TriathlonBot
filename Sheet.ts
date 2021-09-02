@@ -80,6 +80,8 @@ class Sheet{
                 return 5;
             case "SendFlag":
                 return 6;
+            case "Comment":
+                return 7;
 
             //Bike Member Sheet, column 0 is the same as the menu sheet
             case "Name":
