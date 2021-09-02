@@ -92,16 +92,22 @@ class PracticeMail extends Mail{
             }
         }
         const commentColNo:number = this.sheet.getColNum("Comment");
-        const row:string[] = this.sheet.getTheDateRows(Utility.makeDateFormat(new Date(this.menuSessions[0].date)));
-        const comment:string = row[0][commentColNo];
+        try{
+            const row:string[] = this.sheet.getTheDateRows(Utility.makeDateFormat(new Date(this.menuSessions[0].date)));
+            const comment:string = row[0][commentColNo];
 
-        const contents:string = `
-        ${comment}\n<br><br>
-        ${dscrpt}\n<br>
-        ${menuDetails()}\n<br>
-        `
+            const contents:string = `
+            ${comment}\n<br><br>
+            ${dscrpt}\n<br>
+            ${menuDetails()}\n<br>
+            `
+            return contents;
 
-        return contents;
+        }catch(e){
+            const error:string = `Error occurred in MailPractice: ${e}`;
+
+            return error;
+        }
     }
 
     protected makeLinks():string[]{
