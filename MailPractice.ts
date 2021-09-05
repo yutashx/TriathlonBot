@@ -73,7 +73,7 @@ class PracticeMail extends Mail{
                     const wbgt:string= !["プール"].includes(this.menuSessions[i].place) ? `<a href="https://www.wbgt.env.go.jp/wbgt.php">暑さ指数</a>： <a href="https://www.wbgt.env.go.jp/graph_ref_td.php?region=02&prefecture=36&point=36361">${this.menuSessions[i].wbgt}</a>（予報値）<br>\n`: "";
 
                     const detail = `
-                    ${bikeMembers + "<br>\n"}
+                    ${bikeMembers} <br>\n
                     -------------------------<br>\n
                     種目：    ${this.menuSessions[i].event}<br>\n
                     メイン：   ${links[i]}<br>\n
