@@ -39,12 +39,12 @@ class Sheet{
     }
 
     public searchRows(sheetNo:number, colName:SheetColName, item:string, op){
+        const colNum = this.getColNum(colName);
         const sheet = this.sheets[sheetNo];
         const range = sheet.getDataRange();
         const lastRow = range.getLastRow();
-        const lastCol = range.getLastColumn();
-        const dataset = sheet.getRange(2, 1, lastRow, lastCol).getValues(); //2行1列目(headerを除く)からデータを取得
-        const colNum = this.getColNum(colName);
+        //const lastCol = range.getLastColumn();
+        const dataset = this.getDataset(sheet)
         var matchedItems = [];
 
         for (var i = 0; i < lastRow; i++){
@@ -59,8 +59,17 @@ class Sheet{
             return matchedItems;
         }else{
             throw new Error(`no item is found searched for item ${item} at sheetNo: ${sheetNo}`);
-            return [];
         }
+    }
+    
+    public getDataset(sheet, header=false){
+        const range = sheet.getDataRange();
+        const lastRow = range.getLastRow();
+        const lastCol = range.getLastColumn();
+        const startRow = header? 1: 2;
+        const dataset = sheet.getRange(startRow, 1, lastRow, lastCol).getValues(); //2行1列目(headerを除く)からデータを取得
+        
+        return dataset
     }
 
     public getColNum(colName: SheetColName){
@@ -94,8 +103,20 @@ class Sheet{
                 return 4;
             case "Remarks":
                 return 5;
+            
+            //Config Sheet, column 1 is the same as the bike sheet
+            case "VarName":
+                return 0;
+            case "Grade":
+                return 2;
+            case "MailAddress":
+                return 3;
+            case "Belong":
+                return 4;
+
             default:
                 return -1;
+            
         }
     }
 
