@@ -13,7 +13,7 @@ class WeeklyMenuMail extends Mail{
 
         try{
             const day:Day = Utility.day2En(new Date());
-            if (day != "Sun") throw new Error(`This script should be executed on Sunday, Today is ${day}`)
+            //if (day != "Sun") throw new Error(`This script should be executed on Sunday, Today is ${day}`)
             const menu = new Menu(sheetId, menuSheetName);
             this.multiDaysMenuSessions = Utility.range(0, 7).map(x => menu.parseAfterNDays(x))
             this.overwriteSendFlag(menu.sendFlag);
