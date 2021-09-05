@@ -32,7 +32,7 @@ interface wbgt{
     wbgt: number;
 }
 
-type EventType = "イベント"| "ミーティング"| "バイク"| "ラン"| "スイム"|"複合練"|"休み";
+type EventType = "イベント"| "ミーティング"| "バイク"| "ラン"| "スイム"|"複合練"|"休み"|"undefined";
 type Purpose = "練習"|"リマインダー"|"バイク練出欠確認"|"今週の練習メニュー";
 type SendFlag = "send"|"presend"|"prevent";
 type SheetColName = "Date"|"Day"|"Event"|"Detail"|"Time"|"Place"|"SendFlag"|"Name"|"ParticipantStyle"|"BikeStatus"|"Car"|"Remarks"|"Comment";
