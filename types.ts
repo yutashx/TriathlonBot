@@ -34,7 +34,7 @@ interface wbgt{
 
 type EventType = "イベント"| "ミーティング"| "バイク"| "ラン"| "スイム"|"複合練"|"休み"|"undefined";
 type Purpose = "練習"|"リマインダー"|"バイク練出欠確認"|"今週の練習メニュー";
-type SendFlag = "send"|"presend"|"prevent";
+type SendFlag = "send"|"presend"|"prevent"|"error";
 type SheetColName = "Date"|"Day"|"Event"|"Detail"|"Time"|"Place"|"SendFlag"|"Remarks"|"Comment"|
                     "Name"|"ParticipantStyle"|"BikeStatus"|"Car"|
                     "VarName"|"Grade"|"MailAddress"|"Belong"|

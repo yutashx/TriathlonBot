@@ -28,7 +28,7 @@ class WeeklyMenuMail extends Mail{
 			const date:Date = new Date(menuSessions[0].date); 
 			const dateSlash:string = Utility.makeDataFormatMMDDwithSlash(date);
 			const dayEn:string = Utility.day2En(date);
-            const restUrl:string = `https://script.google.com/macros/s/AKfycbwnKWuOjWJCG3vk9DHo6FyvcBDYC7BnrsUu2AV2MmeGN3oxNGaAvgXIckjeSLRWFrSrmQ/exec`
+            const restUrl:string = `https://script.google.com/macros/s/AKfycbziz0gSvDEMq9xH79YMtetgqWAJMi0lNayfg0RVKeIrs5Vu7terQ9I-p0eOKUCK5r0MTA/exec`
 
 			const eventsJp:EventType[] = menuSessions.map(x => x.event);
 			const eventsEn:string[] = eventsJp.map(x => Utility.eventJp2En(x));

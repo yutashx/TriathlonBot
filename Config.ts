@@ -23,7 +23,7 @@ class Config {
 		this.membersEntityNames.forEach(entityName => {
 			const membersName = envs[entityName]
 			const entity = entityName.replace("Names", "")
-			envs[entity] = membersName.map(memberName => members[memberName])
+			envs[entity] = membersName.map(memberName => members[memberName] as Member)
 		})
 		
 		return envs
