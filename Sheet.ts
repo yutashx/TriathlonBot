@@ -11,6 +11,12 @@ class Sheet{
         this.sheets = this.spreadsheet.getSheets();
     }
 
+    public reload(){
+        SpreadsheetApp.flush()
+        this.spreadsheet = SpreadsheetApp.openById(this.id);
+        this.sheets = this.spreadsheet.getSheets();
+    }
+
     public getTheDateRows(date:string):string[]{
         try{
             const sheetNo:number = this.searchSheetNumber();

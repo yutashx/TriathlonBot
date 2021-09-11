@@ -1,11 +1,11 @@
 class MonthlyPage{
-	envs:{[val:string]:string}
 	targetMonth:{[val:string]: number}; //[YYYY, MM]
 	menuSheet:Menu;
-	constructor(envs:{[val:string]:string}, targetMonth:{[val:string]: number}){
-		this.envs = envs;
+	config:any
+	constructor(config:any, targetMonth:{[val:string]: number}){
+		this.config = config
 		this.targetMonth = targetMonth;
-		this.menuSheet = new Menu(this.envs["SHEETID"], this.envs["SHEET_MENU"]);
+		this.menuSheet = new Menu(this.config["SheetId"], this.config["MenuSheetName"]);
 	}
 
 	public generateContents():string{
@@ -22,7 +22,7 @@ class MonthlyPage{
 			const dateMMDD:string[] = menuSessions.map(x => Utility.makeDataFormatMMDD(new Date(x.date)));
 			const link:string[] = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x =>{
 				if (["ラン", "スイム", "バイク"].includes(x[3])){
-					return `<a href="${this.envs["MENUURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`
+					return `<a href="${this.config["UoAMenuURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`
 				}else{
 					return `<a href="" _target="parent">${x[3]}[${x[1]}]<a>`
 				}

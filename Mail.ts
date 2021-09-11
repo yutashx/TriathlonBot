@@ -1,33 +1,84 @@
 class Mail{
-    tag: string;
-    purpose: Purpose;
-    params: MailParams;
-    sendFlag: SendFlag;
-    others: string[]|undefined;
+    config: any
+    sendFlag: SendFlag
+    debugFlag: boolean
 
-    constructor(tag: string, purpose: Purpose, params: MailParams, sendFlag: SendFlag, others?: string[]){
-        this.tag = tag;
-        this.purpose = purpose;
-        this.params = params;
-        this.sendFlag = sendFlag;
-        this.others = others;
+    tag: string
+    title: string
+    debugger: Member[]
+    tester: Member[]
+    receiver: Member[]
+    sender: Member
+
+    constructor(config: any, sendFlag: SendFlag, debugFlag:boolean=false){
+        this.config = config
+        this.sendFlag = sendFlag
+        this.debugFlag = debugFlag
+
+        // Bot must inform debugger when error is ocurred,
+        // so debugger must be register bot as early stage as possible.
+        if (this.config["Debugger"].length == 0) throw new Error(`No one is Debugger`)
+        this.debugger = this.config["Debugger"] 
     }
 
-    public send(){
-        if (this.sendFlag == "prevent"){
-            console.log("sending a mail is prevented");
-        }else{
-            const subject:string = this.generateSubject();
-            const html:string = this.generateHtml();
-            const senderName:string = this.params.sender.name;
-            const to_address:string = this.params.to_address.join(",");
-            const options:{[key: string]: string} = {name: senderName, htmlBody: html};
-            const msg:string = "I thought what I'd do was, I'd pretend I was one of those deaf-mutes";
+    public send(subjectSlug: string[]){
+        if (this.config["Tester"].length == 0) throw new Error(`No one is Tester`)
+        this.tester = this.config["Tester"]
 
-            //console.log(subject);
-            //console.log(html);
-            GmailApp.sendEmail(to_address, subject, msg, options);
-            console.log(`[${this.sendFlag}] A mail is sent for ${this.purpose} from ${senderName}: ${this.params.sender.address} to ${to_address}`);
+        if (this.config["Receiver"].length == 0) throw new Error(`No one is Receiver`)
+        this.receiver = this.config["Receiver"]
+
+        if (this.config["Sender"].length != 1) throw new Error(`Sender is only one`)
+        this.sender = this.config["Sender"][0]
+
+        if (subjectSlug.length != 2) throw new Error(`The number of subject_slug is not two`)
+        this.tag = subjectSlug[0]
+        this.title = subjectSlug[1]
+
+        const subject:string = this.generateSubject()
+        const html:string = this.generateHtml()
+
+        const senderName:string = this.sender.name
+        const to_address:string = this.decideAddress().map(member => member.address).join("/")
+
+        const options:{[key: string]: string} = {name: senderName, htmlBody: html};
+        const msg:string = "I thought what I'd do was, I'd pretend I was one of those deaf-mutes";
+
+        switch (this.sendFlag){
+            case "prevent":
+                console.log("sending a mail is prevented")
+                break
+            case "send":
+            case "presend":
+                GmailApp.sendEmail(to_address, subject, msg, options);
+                console.log(`[${this.sendFlag}] A mail is sent from ${senderName}: ${this.sender.address} to ${to_address}`);
+                break
+            default:
+                console.log(`no flag is matched`)
+                break
+        }
+    }
+    
+    public sendError(error_msg: string){
+        const error_subject:string = `[Error] You should fix right now!`
+        const to_address:string = this.debugger.map(member => member.address).join(",")
+
+        GmailApp.sendEmail(to_address, error_subject, error_msg);
+        console.log(`[error] This Triathlon Bot is now facing some problem! ${error_msg}`)
+    }
+    
+    private decideAddress():Member[]{
+        if (this.debugFlag) return this.debugger
+
+        switch (this.sendFlag){
+            case "send":
+                return this.receiver
+            case "presend":
+                return this.tester
+            case "prevent":
+                return this.debugger
+            default:
+                return this.debugger
         }
     }
 
@@ -35,7 +86,7 @@ class Mail{
 
     private generateSubject():string{
         const prefix:string = this.sendFlag == "presend"? `[Presend]`: ``;
-        const subject:string =  prefix + `[${this.tag}]${this.params.subject} `
+        const subject:string =  prefix + `[${this.tag}]${this.title} `
 
         return subject;
     }
@@ -48,7 +99,7 @@ class Mail{
 
 
     private makeIntroMyself():string{
-        const intro = `${this.params.sender.grade}の${this.params.sender.name}です。<br>`;
+        const intro = `${this.sender.grade}の${this.sender.name}です。<br>`;
 
         return intro;
     }
@@ -71,9 +122,9 @@ class Mail{
         以上です。<br>
         何か質問等がありましたら私まで連絡してください。<br>
         -------------------------<br>
-        ${this.params.sender.belongs}<br>
-        ${this.params.sender.grade} ${this.params.sender.name}<br>
-        email: ${this.params.sender.address}<br>
+        ${this.sender.belongs}<br>
+        ${this.sender.grade} ${this.sender.name}<br>
+        email: ${this.sender.address}<br>
         -------------------------<br>
         `;
 
@@ -86,4 +137,5 @@ class Mail{
             this.sendFlag = "prevent";
         }
     }
+    
 }

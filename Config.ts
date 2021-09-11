@@ -1,48 +1,104 @@
 class Config {
+	sheetId: string
 	configSheet: Sheet
 	configSheetNumber: number
 	membersSheet: Sheet
 	membersSheetNumber: number
-	membersEntityNames: string[]
 
 	constructor(configSheetName:string, membersSheetName:string){
-		const sheetId:string = SpreadsheetApp.getActiveSpreadsheet().getId()
+		this.sheetId = SpreadsheetApp.getActiveSpreadsheet().getId()
 
-		this.configSheet = new Sheet(sheetId, configSheetName)
+		this.configSheet = new Sheet(this.sheetId, configSheetName)
 		this.configSheetNumber = this.configSheet.searchSheetNumber()
-		this.membersSheet = new Sheet(sheetId, membersSheetName)
+		this.membersSheet = new Sheet(this.sheetId, membersSheetName)
 		this.membersSheetNumber = this.membersSheet.searchSheetNumber()
 		
-		this.membersEntityNames = ["SenderNames", "DebuggerNames", "TesterNames", "ProductionNames"]
 	}
 	
-	public load(){
-		const envs = this.parseConfigSheet()	
+	public parseStrictly(){
+		// with type check
+		const [envs, membersEntityNames] = this.parseConfigSheet()	
 		const members = this.parseMembersSheet()
+		envs["SheetId"] = this.sheetId
 		
-		this.membersEntityNames.forEach(entityName => {
+		membersEntityNames.forEach(entityName => {
 			const membersName = envs[entityName]
-			const entity = entityName.replace("Names", "")
+			const entity = entityName.replace("Name", "")
 			envs[entity] = membersName.map(memberName => members[memberName] as Member)
 		})
 		
 		return envs
 	}
 	
+	public parseRoughly(){
+		// without type check
+		const dataset = this.configSheet.getDataset(this.configSheet.sheets[this.configSheetNumber])
+		const envs: {[key:string]: any} = {}
+		const members = this.parseMembersSheet()
+		dataset.forEach((row, n)=> {
+			row.forEach((item, n)=> {
+				if (n == 0) envs[row[0]] = []
+				else if (n == 1) undefined // nothing to do
+				else if (item !== '') envs[row[0]].push(item)
+			})
+		})
+		envs["Debugger"] = envs["DebuggerName"].map(memberName => members[memberName] as Member)
+		
+		return envs
+	}
+
+	
 	private parseConfigSheet(){
 		const dataset = this.configSheet.getDataset(this.configSheet.sheets[this.configSheetNumber])
 		const envs: {[key:string]: any} = {}
+		const membersEntityNames:string[] = []
+
 		dataset.forEach((row, n)=> {
-			if (row.length <= 1) return // only one column is ignored
-			row.forEach((item, n)=> {
-				if (n == 0){
-					envs[row[0]] = [] // make dict key
-				}else if (item){
-					envs[row[0]].push(item) // insert dict item
+			if (row.length <= 2) return // no value row is ignored
+			const key:string = row[0]
+			const isArray:boolean = row[1].includes("[]")
+			const type:string =  row[1].replace("[]", "")
+			if (type == "Member") membersEntityNames.push(key)
+			
+			if (isArray){
+				row.forEach((item, n)=> {
+					if (n == 0 || n == 1){
+						envs[key] = []
+					}else if (item !== ''){
+						if (this.typeCheck(type, item)){
+							envs[key].push(item)
+						}else{
+							throw new Error(`type error: ${key} is expected ${type}, but ${typeof item}`)
+						}
+					}
+				})
+			}else{
+				if (this.typeCheck(type, row[2])){
+					envs[key] = row[2]
+				}else{
+					throw new Error(`type error: ${key} is expected ${type}, but ${typeof row[2]}`)
 				}
-			});
-		});
-		return envs
+			}
+
+		})
+		return [envs, membersEntityNames]
+	}
+	
+	private typeCheck(type:string, value:any){
+		switch(type){
+			case "string":
+				return (typeof value === "string")
+			case "number":
+				return (typeof (value as number) === "number")
+			case "boolean":
+				return (typeof (value as boolean) === "boolean")
+			case "Member":
+				return (typeof value === "string")
+			case "object":
+				return (typeof value === "object")
+			default:
+				return (typeof value === "string")
+		}
 	}
 	
 	private parseMembersSheet(){

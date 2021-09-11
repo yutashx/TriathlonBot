@@ -61,6 +61,31 @@ class Utility{
         return formatted;
     }
 
+    public static makeDataFormatYYYYMMDD(day:Date):string{
+        const year = String(day.getFullYear())
+        const month = String(day.getMonth()+ 1).padStart(2, "0");
+        const date = String(day.getDate()).padStart(2, "0");
+        const formatted = `${year}-${month}-${date}`;
+
+        return formatted;
+    }
+    
+    public static dateOrder(right:string, left:string):boolean{
+        // input: "YYYY-MM-DD"
+        const splitRight:number[] = right.split("-").map(x => Number(x))
+        const splitLeft:number[] = left.split("-").map(x => Number(x))
+        
+        if (splitRight[0] > splitLeft[0]){
+            return true
+        }else if (splitRight[1] > splitLeft[1]){
+            return true
+        }else if (splitRight[2] > splitLeft[2]){
+            return true
+        }else{
+            return false
+        }
+    }
+
     public static getTimeFormat(time:Date):string{
         const hour = String(time.getHours()).padStart(2, "0");
         const min = String(time.getMinutes()).padStart(2, "0");

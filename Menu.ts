@@ -32,14 +32,14 @@ class Menu{
 				throw new Error(`Expected all columns has the same size ${splitedNums[0]}, but event: ${splitedNums[0]}, detail: ${splitedNums[1]}, time: ${splitedNums[2]}, place: ${splitedNums[3]}.`);
 			}
 		}else{
-			throw new Error(`Expected 1 row, but get ${rows.length}.`)
+			throw new Error(`Expected 1 row, but get ${rows.length}. You may need to fix MenuSheetName in config sheet.`)
 		}
 	}
 
 	public parseAfterNDays(n:number):MenuSession[]{
-		const tomorrow:string = Utility.getAfterDays(n);
-		const todayRows:string[] = this.sheet.getTheDateRows(tomorrow);
-		const menuSessions:MenuSession[] = this.parseMenu(todayRows);
+		const theDay:string = Utility.getAfterDays(n);
+		const theDayRows:string[] = this.sheet.getTheDateRows(theDay);
+		const menuSessions:MenuSession[] = this.parseMenu(theDayRows);
 
 		return menuSessions;
 	}

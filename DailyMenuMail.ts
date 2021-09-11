@@ -1,27 +1,23 @@
-class PracticeMail extends Mail{
+class DailyMenuMail extends Mail{
     menuSessions:MenuSession[] = [];
     bikeMembers:string;
-    envs:{[key:string]: string};
     sheet:Sheet;
 
-    constructor(tag: string, purpose: Purpose, params: MailParams, sendFlag: SendFlag, envs: any, others?:string[]){
-        super(tag, purpose, params, sendFlag, others);
-        this.envs = envs;
-        const sheetId = this.envs["SHEETID"];
-        const menuSheetName = this.envs["SHEET_MENU"];
-        const bikeMemberSheetName = this.envs["SHEET_BIKE"];
+    constructor(config: any, sendFlag: SendFlag){
+        super(config, sendFlag)
 
-        try{
-            const menu:Menu = new Menu(sheetId, menuSheetName);
-            this.sheet = new Sheet(sheetId, menuSheetName);
-            this.menuSessions = menu.parseAfterNDays(1);
-            this.overwriteSendFlag(menu.sendFlag);
-            const bikeMembers:Menu = new Menu(sheetId, bikeMemberSheetName);
-            this.bikeMembers = bikeMembers.listUpBikeMembers();
-        }catch(e){
-            this.sendFlag = "prevent";
-            console.log(`Spreadsheet parsing error: ${e}`);
-        }
+        const sheetId = this.config["SheetId"]
+        const menuSheetName:string= this.config["MenuSheetName"]
+        const bikeFormSheetName = this.config["BikeFormSheetName"]
+        const sendDailyMenuMailAfterNDays = this.config["SendDailyMenuMailAfterNDays"]
+
+        const menu:Menu = new Menu(sheetId, menuSheetName);
+        this.sheet = new Sheet(sheetId, menuSheetName);
+        this.menuSessions = menu.parseAfterNDays(sendDailyMenuMailAfterNDays);
+        this.overwriteSendFlag(menu.sendFlag);
+
+        const bikeMembers:Menu = new Menu(sheetId, bikeFormSheetName);
+        this.bikeMembers = bikeMembers.listUpBikeMembers();
     }
 
     protected makeAbstract():string{
@@ -39,11 +35,11 @@ class PracticeMail extends Mail{
         const uniqDscrpt = this.menuSessions.map(x =>{
             switch(x.event){
                 case "スイム":
-                    return "新型コロナウイルスによる重点対策期間中はプールに入っていい人数の制限があるのでこのメールに「選手で参加するorマネージャーで参加する」という内容で返信をお願いします。人数によっては時間を分けたり、ラン練になる場合があります。";
+                    return this.config["SwimMessage"]
                 case "バイク":
-                    return "";
+                    return this.config["BikeMessage"]
                 case "ラン":
-                    return "雨の場合はレイヤートレーニングをします。";
+                    return this.config["RunMessage"]
                 default:
                     return "";
             }
@@ -53,7 +49,7 @@ class PracticeMail extends Mail{
         明日の${eventsSummary}練について連絡します。<br>\n
         明日の${eventMain()}をします。<br>\n
         ${uniqDscrpt}<br>\n
-        体温の記録をスムーズに行うために自分で体温を測れる方は<a href="https://docs.google.com/forms/d/e/1FAIpQLSca2UAGDJ7aidk0iK5mU5kp5iDU1kXksnOldjjWyNyczMgdJw/viewform">フォーム</a>にて練習前に体温の測定、入力をお願いします。<br>\n
+	    ${this.config["DailyMenuMessage"]}<br>\n
         <br>\n
         `
 
@@ -67,10 +63,12 @@ class PracticeMail extends Mail{
             var details:string[] = [];
             if (links.length == this.menuSessions.length){
                 for (var i=0; i<links.length; i++){
-                    const bikeMembers:string = this.menuSessions[i].event == "バイク"? this.bikeMembers: "";
+                    const bikeMembers:string = (this.menuSessions[i].event == "バイク" && this.config["BikeMemberDisplay"])? this.bikeMembers: "";
                     const meetingPlace:string = this.menuSessions[i].event == "バイク"? "サークル棟": this.menuSessions[i].place;
                     const destination:string = this.menuSessions[i].event == "バイク"? `行き先：  ${this.menuSessions[i].place}<br>\n`: ``;
-                    const wbgt:string= !["プール"].includes(this.menuSessions[i].place) ? `<a href="https://www.wbgt.env.go.jp/wbgt.php">暑さ指数</a>： <a href="https://www.wbgt.env.go.jp/graph_ref_td.php?region=02&prefecture=36&point=36361">${this.menuSessions[i].wbgt}</a>（予報値）<br>\n`: "";
+                    const wbgt:string= (!["プール"].includes(this.menuSessions[i].place) && this.config["WbgtDisplay"])?
+                     `<a href=${this.config["WbgtDescriptionURL"]}">暑さ指数</a>： <a href=${this.config["WbgtAreaURL"]}>${this.menuSessions[i].wbgt}</a>（予報値）<br>\n`:
+                      "";
 
                     const detail = `
                     ${bikeMembers} <br>\n
@@ -92,29 +90,22 @@ class PracticeMail extends Mail{
             }
         }
         const commentColNo:number = this.sheet.getColNum("Comment");
-        try{
-            const row:string[] = this.sheet.getTheDateRows(Utility.makeDateFormat(new Date(this.menuSessions[0].date)));
-            const comment:string = row[0][commentColNo];
+        const row:string[] = this.sheet.getTheDateRows(Utility.makeDateFormat(new Date(this.menuSessions[0].date)));
+        const comment:string = row[0][commentColNo];
 
-            const contents:string = `
-            ${comment}\n<br><br>
-            ${dscrpt}\n<br>
-            ${menuDetails()}\n<br>
-            `
-            return contents;
-
-        }catch(e){
-            const error:string = `Error occurred in MailPractice: ${e}`;
-
-            return error;
-        }
+        const contents:string = `
+        ${comment}\n<br><br>
+        ${dscrpt}\n<br>
+        ${menuDetails()}\n<br>
+        `
+        return contents;
     }
 
     protected makeLinks():string[]{
         var links:string[] = [];
         for (var i=0; i<this.menuSessions.length; i++){
             const enEvent:string = Utility.eventJp2En(this.menuSessions[i].event);
-            const link:string = `<a href=${this.envs.MENUURL}${enEvent}/${Utility.getAfterDaysMMDD(1)}.html>${this.menuSessions[i].detail}</a>`;
+            const link:string = `<a href=${this.config["UoAMenuURL"]}${enEvent}/${Utility.getAfterDaysMMDD(1)}.html>${this.menuSessions[i].detail}</a>`;
             links.push(link);
         }
         return links;

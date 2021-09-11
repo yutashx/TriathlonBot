@@ -1,29 +1,27 @@
-class WeeklyMenuFilledMail extends Mail{
+class ValidateMenu extends Mail{
     //execute on Sunday absolutely
     menuSheet:Sheet;
     multiDaysMenuSessions:MenuSession[][] = [];
-    envs:{[val:string]: string};
 
-    constructor(tag: string, purpose: Purpose, params: MailParams, sendFlag: SendFlag, envs: {[val:string]: string}, others?:string[]){
-        super(tag, purpose, params, sendFlag, others);
-        this.envs = envs;
+    constructor(config: any, sendFlag: SendFlag){
+        super(config, sendFlag)
 
-        const sheetId = this.envs["SHEETID"];
-        const menuSheetName = this.envs["SHEET_MENU"];
+        const sheetId = this.config["SheetId"];
+        const menuSheetName = this.config["MenuSheetName"];
 
         try{
             const menu = new Menu(sheetId, menuSheetName);
-            this.multiDaysMenuSessions = Utility.range(2,9).map(x => {
+            const dateRange = this.config["ValidateDateRange"]
+            this.multiDaysMenuSessions = Utility.range(dateRange[0],dateRange[1]).map(x => {
                 try{
                     return menu.parseAfterNDays(x)
                 }catch(e){
                     const date = new Date() //today
                     date.setDate(date.getDate() + x)
-                    const undefinedSession:MenuSession[] = [{date: String(date), event: "undefined", detail: "未定", time: "00:00", place: "undefined", wbgt: -1}]
+                    const undefinedSession:MenuSession[] = [{date: String(date), event: "undefined", detail: this.config["UndefinedDetail"], time: "00:00", place: "undefined", wbgt: -1}]
                     return undefinedSession
                 }
             })
-            this.overwriteSendFlag(menu.sendFlag);
         }catch(e){
             this.overwriteSendFlag("prevent");
             console.log(`Spreadsheet parsing error: ${e}`);
@@ -31,16 +29,14 @@ class WeeklyMenuFilledMail extends Mail{
     }
 
     protected makeAbstract():string{
-        const allNotFilled:boolean = this.multiDaysMenuSessions.some(menuSessions => {
-            const flag:boolean = menuSessions.some(session => {
-                return session.detail === "未定"
+        const filled:boolean = this.multiDaysMenuSessions.every(menuSessions => {
+            const flag:boolean = menuSessions.every(session => {
+                return session.detail !== this.config["UndefinedDetail"]
             })
 
             return flag;
         })
-        if (!allNotFilled){
-            this.overwriteSendFlag("prevent")    
-        }
+        if (filled) this.overwriteSendFlag("prevent")    
 
 		const undefinedSessions:string[] = this.multiDaysMenuSessions.map(menuSessions => {
             const undefinedSession = menuSessions.filter(session => session.detail == "未定")
