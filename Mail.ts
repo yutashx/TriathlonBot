@@ -18,7 +18,7 @@ class Mail{
         // Bot must inform debugger when error is ocurred,
         // so debugger must be register bot as early stage as possible.
         if (this.config["Debugger"].length == 0) throw new Error(`No one is Debugger`)
-        this.debugger = this.config["Debugger"] 
+        this.debugger = this.config["Debugger"]
     }
 
     public send(subjectSlug: string[]){
@@ -51,6 +51,11 @@ class Mail{
             case "send":
             case "presend":
                 GmailApp.sendEmail(to_address, subject, msg, options);
+                console.log(`[${this.sendFlag}] A mail is sent from ${senderName}: ${this.sender.address} to ${to_address}`);
+                break
+            case "debug":
+                const to_debugger:string = this.debugger.map(member => member.address).join(",")
+                GmailApp.sendEmail(to_debugger, subject, msg, options);
                 console.log(`[${this.sendFlag}] A mail is sent from ${senderName}: ${this.sender.address} to ${to_address}`);
                 break
             default:
