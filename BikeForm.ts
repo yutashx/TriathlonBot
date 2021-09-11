@@ -73,7 +73,7 @@ class BikeForm {
 		}
 	}
 
-	public unlink() {
+	public unlink(today:string) {
 		// sheetName of unlink and generate are different
 		const sheets = this.sheet.sheets;
 		sheets.forEach(sheet => {
@@ -82,8 +82,8 @@ class BikeForm {
 				const formUrl = sheet.getFormUrl() // delete candidate form URL
 
 				if (comparedSheetName.includes("-") && formUrl) {
-					const isRightLater: boolean = Utility.dateOrder(this.sheetName, comparedSheetName)
-					console.log(`${comparedSheetName} is later than ${this.sheetName}: ${String(isRightLater)}`)
+					const isRightLater: boolean = Utility.dateOrder(today, comparedSheetName)
+					console.log(`${comparedSheetName} is later than ${today}: ${String(isRightLater)}`)
 					if (isRightLater) {
 						const form = FormApp.openByUrl(formUrl);
 						form.removeDestination(); //unlink sheet

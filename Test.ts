@@ -74,20 +74,19 @@ function testSheetPartially(){
 	console.log(row0);
 }
 
-/*
 function testBikeFormGenerate(){
-	const bikeForm:BikeForm = new BikeForm(envs["SHEETID"], envs["SHEET_MENU"]);
-	const urls:string[] = bikeForm.generate("[triathlon]今週のバイク練の出欠確認", "We go there");
-	console.log(urls);
+	const config = (new Config("config", "members")).parseStrictly()
+	const bikeForm:BikeForm = new BikeForm(config["SheetId"], config["MenuSheetName"], config["BikeFormDefaultSheetName"]);
+        const formUrls:string[] = bikeForm.generate(config["BikeFormMailSubject"][1], "sample");
+	console.log(formUrls)
 }
 
 function testBikeFormUnlink(){
-	const bikeForm:BikeForm = new BikeForm(envs["SHEETID"], envs["SHEET_MENU"]);
-	const unlinkStatus = bikeForm.unlink(envs["SHEET_BIKE"]);
-
-	console.log(`unlink status: ${unlinkStatus}`);
+	const config = (new Config("config", "members")).parseStrictly()
+	const bikeForm:BikeForm = new BikeForm(config["SheetId"], config["MenuSheetName"], config["BikeFormDefaultSheetName"]);
+	const today:string = Utility.makeDataFormatYYYYMMDD(new Date())
+	const unlinkStatus = bikeForm.unlink(today);
 }
-*/
 
 function testMonthlyPage(){
 	const config = (new Config("config", "members")).parseStrictly()

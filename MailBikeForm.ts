@@ -39,10 +39,11 @@ class BikeFormMail extends Mail{
 
         const bikeForm:BikeForm = new BikeForm(this.config["SheetId"], formSheetName, this.config["BikeFormDefaultSheetName"])
         const formUrls:string[] = bikeForm.generate(this.config["BikeFormMailSubject"][1], descriptionFollowing);
+        const today:string = Utility.makeDataFormatYYYYMMDD(new Date())
         // There exists time lag to generate a sheet in the spreadsheet,
         // so we should sleep just a moment.
         bikeForm.renameFormSheet()
-        bikeForm.unlink();
+        bikeForm.unlink(today);
         
         const abstract:string = `
         次回のバイク練について連絡します。<br>\n
