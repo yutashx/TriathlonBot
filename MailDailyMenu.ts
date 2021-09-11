@@ -8,8 +8,8 @@ class DailyMenuMail extends Mail{
 
         const sheetId = this.config["SheetId"]
         const menuSheetName:string= this.config["MenuSheetName"]
-        const bikeFormSheetName = this.config["BikeFormSheetName"]
         const sendDailyMenuMailAfterNDays = this.config["SendDailyMenuMailAfterNDays"]
+        const bikeFormSheetName = Utility.makeDataFormatYYYYMMDD(Utility.getAfterNDaysDate(sendDailyMenuMailAfterNDays))
 
         const menu:Menu = new Menu(sheetId, menuSheetName);
         this.sheet = new Sheet(sheetId, menuSheetName);
@@ -26,7 +26,7 @@ class DailyMenuMail extends Mail{
             var linkedMains:string[] = [];
             const eventsLink:string[] = this.makeLinks();
             for (var i=0; i<this.menuSessions.length; i++){
-                const linkedMain:string = `${this.menuSessions[i].event}練は${eventsLink[i]}`
+                const linkedMain:string = `${this.menuSessions[i].event}は${eventsLink[i]}`
                 linkedMains.push(linkedMain);
             }
 

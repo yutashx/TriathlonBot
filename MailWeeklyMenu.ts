@@ -15,7 +15,7 @@ class WeeklyMenuMail extends Mail{
 
         const menu = new Menu(sheetId, menuSheetName)
         this.sheet = new Sheet(sheetId, menuSheetName)
-        const dateRange:number[] = this.config["DateRange"]
+        const dateRange:number[] = this.config["SendDateRange"]
         this.multiDaysMenuSessions = Utility.range(dateRange[0], dateRange[1]).map(x => menu.parseAfterNDays(x))
         this.overwriteSendFlag(menu.sendFlag);
     }

@@ -39,7 +39,7 @@ class Mail{
         const html:string = this.generateHtml()
 
         const senderName:string = this.sender.name
-        const to_address:string = this.decideAddress().map(member => member.address).join("/")
+        const to_address:string = this.decideAddress().map(member => member.address).join(",")
 
         const options:{[key: string]: string} = {name: senderName, htmlBody: html};
         const msg:string = "I thought what I'd do was, I'd pretend I was one of those deaf-mutes";

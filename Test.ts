@@ -23,7 +23,7 @@ function testValidateWeeklyMail(){
 
 const testMailSystem = (subject:string, Mail:any) => {
 	const config = (new Config("config", "members")).parseStrictly()
-	const mail = new Mail(config, "send", true)
+	const mail = new Mail(config, "debug", true)
 	mail.send(config[subject])
 }
 

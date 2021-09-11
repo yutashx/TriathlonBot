@@ -44,6 +44,14 @@ class Utility{
 
         return dayFormat;
     }
+    
+    public static getAfterNDaysDate(n:number){
+        const today:Date = new Date();
+        const afterNDays:Date = new Date(today);
+        afterNDays.setDate(afterNDays.getDate() + n);
+        
+        return afterNDays
+    }
 
     public static makeDataFormatMMDD(day:Date):string{
         const month = String(day.getMonth()+ 1).padStart(2, "0");

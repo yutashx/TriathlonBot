@@ -1,4 +1,3 @@
-
 function SendTestPracticeEmail(){
 	sendMailSystem("presend", "DailyMenuMailSubject", DailyMenuMail)
 }
@@ -19,8 +18,8 @@ function SendProductionWeeklyMenuMail(){
 	sendMailSystem("send", "WeeklyMenuMailSubject", WeeklyMenuMail)
 }
 
-function SendTestWeeklyFilledCheckMail(){
-	sendMailSystem("presend", "ValidateWeeklyMenuSubject", ValidateMenu)
+function SendMenuValidationMail(){
+	sendMailSystem("presend", "ValidateWeeklyMenuMailSubject", ValidateMenu)
 }
 
 const sendMailSystem = (sendFlag:SendFlag, subject:string, Mail:any) => {
