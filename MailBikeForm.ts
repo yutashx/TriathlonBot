@@ -7,24 +7,25 @@ class BikeFormMail extends Mail{
 
         const sendAfterNDays:number = this.config["SendBikeFormMailAfterNDays"]
 
-        try{
-            const menu = new Menu(this.config["SheetId"], this.config["MenuSheetName"]);
-            this.menuSessions = menu.parseAfterNDays(sendAfterNDays)
-            this.overwriteSendFlag(menu.sendFlag);
+        const menu = new Menu(this.config["SheetId"], this.config["MenuSheetName"]);
+        this.menuSessions = menu.parseAfterNDays(sendAfterNDays)
+        this.overwriteSendFlag(menu.sendFlag);
 
-            if (!this.menuSessions.some(x => x.event == "バイク")){
-                console.log(`After ${sendAfterNDays} days is not bike day.`);
-                this.overwriteSendFlag("prevent");
-            }
-        }catch(e){
-            this.sendFlag = "prevent";
-            console.log(`Spreadsheet parsing error: ${e}`);
+        if (this.menuSessions.every(x => x.event !== "バイク")){
+            console.log(`After ${sendAfterNDays} days is not bike day.`);
+            this.overwriteSendFlag("prevent");
         }
     }
 
     protected makeAbstract():string{
         const bikeSessions:MenuSession[] = this.menuSessions.filter(menuSession => menuSession.event == "バイク" )
-        if (bikeSessions.length == 0)  throw new Error(`There is no bike day.`)
+        if (bikeSessions.length == 0){
+            const message:string = `There is no bike day`
+            console.log(message)
+            this.sendFlag = "prevent"
+            
+            return message
+        } 
 
         const deadlineDay:string = Utility.getAfterDaysMMDDwithSlash(this.config["SendBikeFormMailAfterNDays"]);
         const deadlineTime:string = Utility.getTimeFormat(new Date(this.config["BikeFormDeadlineTime"]))
