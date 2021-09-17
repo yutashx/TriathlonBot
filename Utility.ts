@@ -2,6 +2,7 @@ class Utility{
     constructor(){
     }
 
+    /*
     public static getToday():string{
         const today:Date = new Date();
         const todayFormat:string = this.makeDateFormat(today);
@@ -17,7 +18,24 @@ class Utility{
 
         return dayFormat;
     }
+    */
 
+    public static getAfterNDaysFrom(date:Date, n:number):Date{
+        date.setDate(date.getDate() + n);
+
+        return date;
+    }
+
+    public static date2str(date:Date, format:string):string{
+        const formattedDate:string = format
+            .replace("%Y", String(date.getFullYear()))
+            .replace("%M", String(date.getMonth()).padStart(2, "0"))
+            .replace("%D", String(date.getDate()).padStart(2, "0"))
+
+        return formattedDate
+    }
+
+    /*
     public static makeDateFormat(day:Date):string{
         const year = day.getFullYear();
         const month = String(day.getMonth()+ 1).padStart(2, "0");
@@ -77,6 +95,7 @@ class Utility{
 
         return formatted;
     }
+    */
     
     public static dateOrder(right:string, left:string):boolean{
         // input: "YYYY-MM-DD"

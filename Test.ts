@@ -27,6 +27,7 @@ const testMailSystem = (subject:string, Mail:any) => {
 	mail.send(config[subject])
 }
 
+/*
 function testUtility(){
 	const today = new Date(2021, 3, 1);
 	const formatToday1 = Utility.makeDateFormat(today);
@@ -42,6 +43,7 @@ function testUtility(){
 	const afterDays = Utility.getAfterDays(3);
 	console.log(`getAfterDays: ${afterDays}`)
 }
+*/
 
 function testUtilityZip(){
 	const num:string[] = ["0", "1", "2"];
@@ -84,7 +86,7 @@ function testBikeFormGenerate(){
 function testBikeFormUnlink(){
 	const config = (new Config("config", "members")).parseStrictly()
 	const bikeForm:BikeForm = new BikeForm(config["SheetId"], config["MenuSheetName"], config["BikeFormDefaultSheetName"]);
-	const today:string = Utility.makeDataFormatYYYYMMDD(new Date())
+	const today:string = Utility.date2str(new Date(), "%Y-%M-%D")
 	const unlinkStatus = bikeForm.unlink(today);
 }
 
@@ -164,4 +166,31 @@ function testDateOrder(){
 
 	const test6:boolean = Utility.dateOrder(date0, date0)
 	console.log(String(test6 == false))
+}
+
+function testGetAfterNDaysFrom(){
+	const aidaBirthDay:Date = new Date(2000, 10, 26)
+	const myBirthDay:Date = Utility.getAfterNDaysFrom(aidaBirthDay, 4)
+	const newYearDay:Date = new Date(2000, 1, 1)
+
+	console.log(`
+	${Utility.date2str(aidaBirthDay, "%Y-%M-%D")},
+	${Utility.date2str(aidaBirthDay, "%Y/%M/%D")},
+	${Utility.date2str(aidaBirthDay, "%M-%D")},
+	${Utility.date2str(aidaBirthDay, "%M/%D")}
+	 `)
+
+	console.log(`
+	${Utility.date2str(myBirthDay, "%Y-%M-%D")},
+	${Utility.date2str(myBirthDay, "%Y/%M/%D")},
+	${Utility.date2str(myBirthDay, "%M-%D")},
+	${Utility.date2str(myBirthDay, "%M/%D")}
+	 `)
+	
+	console.log(`
+	${Utility.date2str(newYearDay, "%Y-%M-%D")},
+	${Utility.date2str(newYearDay, "%Y/%M/%D")},
+	${Utility.date2str(newYearDay, "%M-%D")},
+	${Utility.date2str(newYearDay, "%M/%D")}
+	 `)
 }

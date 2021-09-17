@@ -55,7 +55,7 @@ class Sheet{
 
         for (var i = 0; i < lastRow; i++){
             const lookUpItem = dataset[i][colNum];
-            const formatLookUpItem:string = colName == "Date" && lookUpItem?  Utility.makeDateFormat(lookUpItem): lookUpItem;
+            const formatLookUpItem:string = colName == "Date" && lookUpItem?  Utility.date2str(new Date(lookUpItem), "%Y-%M-%D"): lookUpItem;
             if (op(formatLookUpItem, item)){
                 matchedItems.push(dataset[i]);
             }

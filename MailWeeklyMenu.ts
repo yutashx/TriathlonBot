@@ -22,15 +22,15 @@ class WeeklyMenuMail extends Mail{
 
     protected makeAbstract():string{
 		const weeklySessions:string[] = this.multiDaysMenuSessions.map(menuSessions => {
-			const date:Date = new Date(menuSessions[0].date); 
-			const dateSlash:string = Utility.makeDataFormatMMDDwithSlash(date);
+			const date:Date = menuSessions[0].date
+			const dateSlash:string = Utility.date2str(date, "%M/%D")
 			const dayEn:string = Utility.day2En(date);
             const restUrl:string = this.config["RestURL"]
 
 			const eventsJp:EventType[] = menuSessions.map(x => x.event);
 			const eventsEn:string[] = eventsJp.map(x => Utility.eventJp2En(x));
 			const mains:string[] = menuSessions.map(x => x.detail);
-			const dateMMDD:string[] = menuSessions.map(x => Utility.makeDataFormatMMDD(new Date(x.date)));
+			const dateMMDD:string[] = menuSessions.map(x => Utility.date2str(x.date, "%M%D"))
 			const link:string = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x =>{
                 if (["ラン", "スイム", "バイク"].includes(x[3])){
                     return `<a href="${this.config["UoAMenuURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`
@@ -51,7 +51,7 @@ class WeeklyMenuMail extends Mail{
 		})
         
         const commentColNo:number = this.sheet.getColNum("Comment");
-        const row:string[] = this.sheet.getTheDateRows(Utility.makeDateFormat(new Date(this.multiDaysMenuSessions[0][0].date)));
+        const row:string[] = this.sheet.getTheDateRows(Utility.date2str(this.multiDaysMenuSessions[0][0].date, "%Y-%M-%D"))
         const comment:string = row[0][commentColNo];
 
         const weeklySchedule:string = weeklySessions.join("<br>\n");

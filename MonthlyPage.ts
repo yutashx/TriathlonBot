@@ -12,14 +12,14 @@ class MonthlyPage{
 		const targetDates = `${this.targetMonth["year"]}-${String(this.targetMonth["month"]).padStart(2, "0")}`
 		const multiDaysMenuSessions:MenuSession[][] = this.menuSheet.parseMatchedDays(targetDates);
 		const sessionTable:string[] = multiDaysMenuSessions.map(menuSessions => {
-			const date:Date = new Date(menuSessions[0].date); 
-			const dateSlash:string = Utility.makeDataFormatMMDDwithSlash(date);
+			const date:Date = menuSessions[0].date
+			const dateSlash:string = Utility.date2str(date, "%M/%D")
 			const dayEn:string = Utility.day2En(date);
 
 			const eventsJp:EventType[] = menuSessions.map(x => x.event);
 			const eventsEn:string[] = eventsJp.map(x => Utility.eventJp2En(x));
 			const mains:string[] = menuSessions.map(x => x.detail);
-			const dateMMDD:string[] = menuSessions.map(x => Utility.makeDataFormatMMDD(new Date(x.date)));
+			const dateMMDD:string[] = menuSessions.map(x => Utility.date2str(x.date, "%M%D"))
 			const link:string[] = Utility.zip([eventsEn, mains, dateMMDD, eventsJp]).map(x =>{
 				if (["ラン", "スイム", "バイク"].includes(x[3])){
 					return `<a href="${this.config["UoAMenuURL"]}${x[0]}/${x[2]}.html" _target="parent">${x[3]}練[${x[1]}]</a>`

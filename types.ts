@@ -1,5 +1,5 @@
 interface MenuSession{
-    date: string;
+    date: Date;
     event: EventType;
     detail: string;
     time: string;

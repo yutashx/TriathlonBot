@@ -27,10 +27,12 @@ class BikeFormMail extends Mail{
             return message
         } 
 
-        const deadlineDay:string = Utility.getAfterDaysMMDDwithSlash(this.config["SendBikeFormMailAfterNDays"]);
+        const dlDay:Date = Utility.getAfterNDaysFrom(new Date(), this.config["SendBikeFormMailAfterNDays"])
+        const deadlineDay:string = Utility.date2str(dlDay, "%M/%D")
         const deadlineTime:string = Utility.getTimeFormat(new Date(this.config["BikeFormDeadlineTime"]))
-        const date:string = Utility.makeDataFormatMMDDwithSlash(new Date(bikeSessions[0].date))
-        const formSheetName:string = Utility.makeDataFormatYYYYMMDD(new Date(bikeSessions[0].date))
+        const bikeDay:Date = new Date(bikeSessions[0].date)
+        const date:string = Utility.date2str(bikeDay, "%M/%D")
+        const formSheetName:string = Utility.date2str(bikeDay, "%Y-%M-%D")
         const places:string = bikeSessions.map(bikeSession => bikeSession.place).join("/")
 
         const description:string = `${date}のバイク練は${places}に行きます。
@@ -40,7 +42,7 @@ class BikeFormMail extends Mail{
 
         const bikeForm:BikeForm = new BikeForm(this.config["SheetId"], formSheetName, this.config["BikeFormDefaultSheetName"])
         const formUrls:string[] = bikeForm.generate(this.config["BikeFormMailSubject"][1], descriptionFollowing);
-        const today:string = Utility.makeDataFormatYYYYMMDD(new Date())
+        const today:string = Utility.date2str(new Date(), "%Y-%M-%D")
         // There exists time lag to generate a sheet in the spreadsheet,
         // so we should sleep just a moment.
         bikeForm.renameFormSheet()

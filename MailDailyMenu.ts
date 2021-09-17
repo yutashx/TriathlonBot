@@ -9,7 +9,8 @@ class DailyMenuMail extends Mail{
         const sheetId = this.config["SheetId"]
         const menuSheetName:string= this.config["MenuSheetName"]
         const sendDailyMenuMailAfterNDays = this.config["SendDailyMenuMailAfterNDays"]
-        const bikeFormSheetName = Utility.makeDataFormatYYYYMMDD(Utility.getAfterNDaysDate(sendDailyMenuMailAfterNDays))
+        const afterNDaysDate:Date = Utility.getAfterNDaysFrom(new Date(), sendDailyMenuMailAfterNDays)
+        const bikeFormSheetName = Utility.date2str(afterNDaysDate, "%Y-%M-%D")
 
         const menu:Menu = new Menu(sheetId, menuSheetName);
         this.sheet = new Sheet(sheetId, menuSheetName);
@@ -90,7 +91,8 @@ class DailyMenuMail extends Mail{
             }
         }
         const commentColNo:number = this.sheet.getColNum("Comment");
-        const row:string[] = this.sheet.getTheDateRows(Utility.makeDateFormat(new Date(this.menuSessions[0].date)));
+        const theDay:Date = this.menuSessions[0].date
+        const row:string[] = this.sheet.getTheDateRows(Utility.date2str(theDay, "%Y-%M-%D"))
         const comment:string = row[0][commentColNo];
 
         const contents:string = `
@@ -102,10 +104,14 @@ class DailyMenuMail extends Mail{
     }
 
     protected makeLinks():string[]{
-        var links:string[] = [];
+        const links:string[] = []
+        const today:Date = new Date()
+        const tomorrow:Date = Utility.getAfterNDaysFrom(today, 1)
+        const tomorrowStr:string = Utility.date2str(tomorrow, "%M%D")
+
         for (var i=0; i<this.menuSessions.length; i++){
             const enEvent:string = Utility.eventJp2En(this.menuSessions[i].event);
-            const link:string = `<a href=${this.config["UoAMenuURL"]}${enEvent}/${Utility.getAfterDaysMMDD(1)}.html>${this.menuSessions[i].detail}</a>`;
+            const link:string = `<a href=${this.config["UoAMenuURL"]}${enEvent}/${tomorrowStr}.html>${this.menuSessions[i].detail}</a>`;
             links.push(link);
         }
         return links;

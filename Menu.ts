@@ -8,7 +8,7 @@ class Menu{
 
 	public parseMenu(rows:string[]):MenuSession[]{
 		if (rows.length == 1){
-			const date:string = rows[0][this.sheet.getColNum("Date")];
+			const date:Date = new Date(rows[0][this.sheet.getColNum("Date")])
 			const events:string[] = rows[0][this.sheet.getColNum("Event")].split("/");
 			const details:string[] = rows[0][this.sheet.getColNum("Detail")].split("/");
 			const times:string[] = rows[0][this.sheet.getColNum("Time")].split("/");
@@ -37,7 +37,8 @@ class Menu{
 	}
 
 	public parseAfterNDays(n:number):MenuSession[]{
-		const theDay:string = Utility.getAfterDays(n);
+		const date:Date = Utility.getAfterNDaysFrom(new Date(), n)
+		const theDay:string = Utility.date2str(date, "%Y-%M-%D")
 		const theDayRows:string[] = this.sheet.getTheDateRows(theDay);
 		const menuSessions:MenuSession[] = this.parseMenu(theDayRows);
 

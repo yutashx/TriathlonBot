@@ -18,7 +18,7 @@ class ValidateMenu extends Mail{
                 }catch(e){
                     const date = new Date() //today
                     date.setDate(date.getDate() + x)
-                    const undefinedSession:MenuSession[] = [{date: String(date), event: "undefined", detail: this.config["UndefinedDetail"], time: "00:00", place: "undefined", wbgt: -1}]
+                    const undefinedSession:MenuSession[] = [{date: date, event: "undefined", detail: this.config["UndefinedDetail"], time: "00:00", place: "undefined", wbgt: -1}]
                     return undefinedSession
                 }
             })
@@ -39,8 +39,8 @@ class ValidateMenu extends Mail{
         if (filled) this.overwriteSendFlag("prevent")    
 
 		const undefinedSessions:string[] = this.multiDaysMenuSessions.map(menuSessions => {
-            const undefinedSession = menuSessions.filter(session => session.detail == "未定")
-            const message = undefinedSession.map(session => `${Utility.makeDataFormatMMDDwithSlash(new Date(session.date))}の${session.event}が未記入です。`).join('<br>\n')
+            const undefinedSession = menuSessions.filter(session => session.detail == this.config["UndefinedDetail"])
+            const message = undefinedSession.map(session => `${Utility.date2str(session.date, "%M/%D")}の${session.event}が未記入です。`).join('<br>\n')
             
             return message
         })
