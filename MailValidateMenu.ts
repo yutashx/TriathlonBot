@@ -10,7 +10,7 @@ class ValidateMenu extends Mail{
         const menuSheetName = this.config["MenuSheetName"];
 
         try{
-            const menu = new Menu(sheetId, menuSheetName);
+            const menu = new Menu(sheetId, menuSheetName, this.config);
             const dateRange = this.config["ValidateDateRange"]
             this.multiDaysMenuSessions = Utility.range(dateRange[0],dateRange[1]).map(x => {
                 try{

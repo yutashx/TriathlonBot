@@ -2,24 +2,6 @@ class Utility{
     constructor(){
     }
 
-    /*
-    public static getToday():string{
-        const today:Date = new Date();
-        const todayFormat:string = this.makeDateFormat(today);
-
-        return todayFormat;
-    }
-
-    public static getAfterDays(n:number):string{
-        const today:Date = new Date();
-        const afterNDays:Date = new Date(today);
-        afterNDays.setDate(afterNDays.getDate() + n);
-        const dayFormat:string = this.makeDateFormat(afterNDays);
-
-        return dayFormat;
-    }
-    */
-
     public static getAfterNDaysFrom(date:Date, n:number):Date{
         date.setDate(date.getDate() + n);
 
@@ -29,74 +11,12 @@ class Utility{
     public static date2str(date:Date, format:string):string{
         const formattedDate:string = format
             .replace("%Y", String(date.getFullYear()))
-            .replace("%M", String(date.getMonth()).padStart(2, "0"))
+            .replace("%M", String(date.getMonth() + 1).padStart(2, "0"))
             .replace("%D", String(date.getDate()).padStart(2, "0"))
 
         return formattedDate
     }
 
-    /*
-    public static makeDateFormat(day:Date):string{
-        const year = day.getFullYear();
-        const month = String(day.getMonth()+ 1).padStart(2, "0");
-        const date = String(day.getDate()).padStart(2, "0");
-        const formatted = `${year}-${month}-${date}`;
-
-        return formatted;
-    }
-
-    public static getAfterDaysMMDD(n:number):string{
-        const today:Date = new Date();
-        const afterNDays:Date = new Date(today);
-        afterNDays.setDate(afterNDays.getDate() + n);
-        const dayFormat:string = this.makeDataFormatMMDD(afterNDays);
-
-        return dayFormat;
-    }
-
-    public static getAfterDaysMMDDwithSlash(n:number):string{
-        const today:Date = new Date();
-        const afterNDays:Date = new Date(today);
-        afterNDays.setDate(afterNDays.getDate() + n);
-        const dayFormat:string = this.makeDataFormatMMDDwithSlash(afterNDays);
-
-        return dayFormat;
-    }
-    
-    public static getAfterNDaysDate(n:number){
-        const today:Date = new Date();
-        const afterNDays:Date = new Date(today);
-        afterNDays.setDate(afterNDays.getDate() + n);
-        
-        return afterNDays
-    }
-
-    public static makeDataFormatMMDD(day:Date):string{
-        const month = String(day.getMonth()+ 1).padStart(2, "0");
-        const date = String(day.getDate()).padStart(2, "0");
-        const formatted = `${month}${date}`;
-
-        return formatted;
-    }
-
-    public static makeDataFormatMMDDwithSlash(day:Date):string{
-        const month = String(day.getMonth()+ 1).padStart(2, "0");
-        const date = String(day.getDate()).padStart(2, "0");
-        const formatted = `${month}/${date}`;
-
-        return formatted;
-    }
-
-    public static makeDataFormatYYYYMMDD(day:Date):string{
-        const year = String(day.getFullYear())
-        const month = String(day.getMonth()+ 1).padStart(2, "0");
-        const date = String(day.getDate()).padStart(2, "0");
-        const formatted = `${year}-${month}-${date}`;
-
-        return formatted;
-    }
-    */
-    
     public static dateOrder(right:string, left:string):boolean{
         // input: "YYYY-MM-DD"
         const splitRight:number[] = right.split("-").map(x => Number(x))

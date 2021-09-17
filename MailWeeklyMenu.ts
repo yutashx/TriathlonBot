@@ -13,7 +13,7 @@ class WeeklyMenuMail extends Mail{
         if (day != (this.config["SendDay"] as Day))
             throw new Error(`This script should be executed on ${sendDay}, but today is ${day}`)
 
-        const menu = new Menu(sheetId, menuSheetName)
+        const menu = new Menu(sheetId, menuSheetName, this.config)
         this.sheet = new Sheet(sheetId, menuSheetName)
         const dateRange:number[] = this.config["SendDateRange"]
         this.multiDaysMenuSessions = Utility.range(dateRange[0], dateRange[1]).map(x => menu.parseAfterNDays(x))

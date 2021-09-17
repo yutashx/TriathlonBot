@@ -7,7 +7,7 @@ class BikeFormMail extends Mail{
 
         const sendAfterNDays:number = this.config["SendBikeFormMailAfterNDays"]
 
-        const menu = new Menu(this.config["SheetId"], this.config["MenuSheetName"]);
+        const menu = new Menu(this.config["SheetId"], this.config["MenuSheetName"], this.config);
         this.menuSessions = menu.parseAfterNDays(sendAfterNDays)
         this.overwriteSendFlag(menu.sendFlag);
 

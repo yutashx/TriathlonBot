@@ -3,7 +3,7 @@ class Menu{
 	sendFlag:string;
 	config:any;
 
-	constructor(sheetId:string, sheetName:string, config?:any){
+	constructor(sheetId:string, sheetName:string, config:any){
 		this.sheet = new Sheet(sheetId, sheetName);
 		this.config = config
 	}

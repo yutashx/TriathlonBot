@@ -12,12 +12,12 @@ class DailyMenuMail extends Mail{
         const afterNDaysDate:Date = Utility.getAfterNDaysFrom(new Date(), sendDailyMenuMailAfterNDays)
         const bikeFormSheetName = Utility.date2str(afterNDaysDate, "%Y-%M-%D")
 
-        const menu:Menu = new Menu(sheetId, menuSheetName);
+        const menu:Menu = new Menu(sheetId, menuSheetName, this.config);
         this.sheet = new Sheet(sheetId, menuSheetName);
         this.menuSessions = menu.parseAfterNDays(sendDailyMenuMailAfterNDays);
         this.overwriteSendFlag(menu.sendFlag);
 
-        const bikeMembers:Menu = new Menu(sheetId, bikeFormSheetName);
+        const bikeMembers:Menu = new Menu(sheetId, bikeFormSheetName, this.config);
         this.bikeMembers = bikeMembers.listUpBikeMembers();
     }
 

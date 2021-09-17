@@ -5,7 +5,7 @@ class MonthlyPage{
 	constructor(config:any, targetMonth:{[val:string]: number}){
 		this.config = config
 		this.targetMonth = targetMonth;
-		this.menuSheet = new Menu(this.config["SheetId"], this.config["MenuSheetName"]);
+		this.menuSheet = new Menu(this.config["SheetId"], this.config["MenuSheetName"], this.config);
 	}
 
 	public generateContents():string{
