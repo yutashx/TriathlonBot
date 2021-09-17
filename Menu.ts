@@ -1,9 +1,11 @@
 class Menu{
 	sheet:Sheet;
 	sendFlag:string;
+	config:any;
 
-	constructor(sheetId:string, sheetName:string){
+	constructor(sheetId:string, sheetName:string, config?:any){
 		this.sheet = new Sheet(sheetId, sheetName);
+		this.config = config
 	}
 
 	public parseMenu(rows:string[]):MenuSession[]{
@@ -20,7 +22,7 @@ class Menu{
 			// check all columns contains the same number
 			if (splitedNums.every(x => x == splitedNums[0])){
 				const sessions: MenuSession[] = [];
-				const wbgt:Wbgt = new Wbgt();
+				const wbgt:Wbgt = new Wbgt(this.config["WbgtAPIURL"]);
 				wbgt.parse();
 				for (var i=0; i<splitedNums[0]; i++){
 					const wbgtVal:number = wbgt.search(new Date(date), times[i]);

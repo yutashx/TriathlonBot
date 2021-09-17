@@ -1,7 +1,7 @@
 class Wbgt{
 	url:string;
 	wbgts:wbgt[];
-	constructor(url:string="https://www.wbgt.env.go.jp/prev15WG/dl/yohou_36361.csv"){
+	constructor(url:string){
 		this.url = url;
 	}
 
