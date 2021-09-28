@@ -27,24 +27,6 @@ const testMailSystem = (subject:string, Mail:any) => {
 	mail.send(config[subject])
 }
 
-/*
-function testUtility(){
-	const today = new Date(2021, 3, 1);
-	const formatToday1 = Utility.makeDateFormat(today);
-	if ("2021-04-01" == formatToday1){
-		console.log("makeDateFormat pass test");
-	}else{
-		console.log(`test fail: ${formatToday1}`)
-	}
-
-	const formatToday2 = Utility.getToday();
-	console.log(`getToday: ${formatToday2}`);
-
-	const afterDays = Utility.getAfterDays(3);
-	console.log(`getAfterDays: ${afterDays}`)
-}
-*/
-
 function testUtilityZip(){
 	const num:string[] = ["0", "1", "2"];
 	const en:string[] = ["zero", "one", "two"];
@@ -148,6 +130,7 @@ function testDateOrder(){
 	const date1 = "2020-10-30"
 	const date2 = "2021-09-29"
 	const date3 = "2021-10-26"
+	const date4 = "2021-10-01"
 
 	const test0:boolean = Utility.dateOrder(date0, date1)
 	const test1:boolean = Utility.dateOrder(date1, date0)
@@ -165,6 +148,9 @@ function testDateOrder(){
 	console.log(String(test5 == false))
 
 	const test6:boolean = Utility.dateOrder(date0, date0)
+	console.log(String(test6 == false))
+
+	const test7:boolean = Utility.dateOrder(date2, date4)
 	console.log(String(test6 == false))
 }
 

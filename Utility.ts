@@ -17,20 +17,18 @@ class Utility{
         return formattedDate
     }
 
-    public static dateOrder(right:string, left:string):boolean{
+    public static dateOrder(left:string, right:string):boolean{
         // input: "YYYY-MM-DD"
         const splitRight:number[] = right.split("-").map(x => Number(x))
         const splitLeft:number[] = left.split("-").map(x => Number(x))
         
-        if (splitRight[0] > splitLeft[0]){
-            return true
-        }else if (splitRight[1] > splitLeft[1]){
-            return true
-        }else if (splitRight[2] > splitLeft[2]){
-            return true
-        }else{
-            return false
-        }
+        if (splitLeft[0] < splitRight[0]) return true
+        else if (splitLeft[0] > splitRight[0]) return false
+        else if (splitLeft[1] < splitRight[1]) return true
+        else if (splitLeft[1] > splitRight[1]) return false
+        else if (splitLeft[2] < splitRight[2]) return true
+        else if (splitLeft[2] > splitRight[2]) return false
+        else return false
     }
 
     public static getTimeFormat(time:Date):string{

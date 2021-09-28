@@ -82,9 +82,9 @@ class BikeForm {
 				const formUrl = sheet.getFormUrl() // delete candidate form URL
 
 				if (comparedSheetName.includes("-") && formUrl) {
-					const isRightLater: boolean = Utility.dateOrder(today, comparedSheetName)
-					console.log(`${comparedSheetName} is later than ${today}: ${String(isRightLater)}`)
-					if (isRightLater) {
+					const isTodayLater: boolean = Utility.dateOrder(comparedSheetName, today) //if right side date is later, then return true
+					console.log(`${today} is later than ${comparedSheetName}: ${String(isTodayLater)}`)
+					if (isTodayLater) {
 						const form = FormApp.openByUrl(formUrl);
 						form.removeDestination(); //unlink sheet
 						this.sheet.spreadsheet.deleteSheet(sheet); //delete sheet

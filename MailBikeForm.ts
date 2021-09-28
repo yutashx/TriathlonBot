@@ -27,17 +27,17 @@ class BikeFormMail extends Mail{
             return message
         } 
 
-        const dlDay:Date = Utility.getAfterNDaysFrom(new Date(), this.config["SendBikeFormMailAfterNDays"])
+        const dlDay:Date = Utility.getAfterNDaysFrom(new Date(), this.config["SendBikeFormMailAfterNDays"] - 1)
         const deadlineDay:string = Utility.date2str(dlDay, "%M/%D")
         const deadlineTime:string = Utility.getTimeFormat(new Date(this.config["BikeFormDeadlineTime"]))
         const bikeDay:Date = new Date(bikeSessions[0].date)
+        const bikeTime:string = bikeSessions[0].time
+        const bikeGatherPlace:string = this.config["BikeGatherPlace"]
         const date:string = Utility.date2str(bikeDay, "%M/%D")
         const formSheetName:string = Utility.date2str(bikeDay, "%Y-%M-%D")
         const places:string = bikeSessions.map(bikeSession => bikeSession.place).join("/")
 
-        const description:string = `${date}のバイク練は${places}に行きます。
-        返信期限は${deadlineDay}の${deadlineTime}です。
-        それに伴い、選手とマネージャーの出欠確認をいたします。`
+        const description:string = `${date}のバイク練は${places}に行きます。参加する方は${date}の${bikeTime}に${bikeGatherPlace}に集合してください。\nそれに伴い、選手とマネージャーの出欠確認をいたします。返信期限は${deadlineDay}の${deadlineTime}です。`
         const descriptionFollowing:string = `${description}参加する方は以下の返信フォームに従って返信して下さい。`
 
         const bikeForm:BikeForm = new BikeForm(this.config["SheetId"], formSheetName, this.config["BikeFormDefaultSheetName"])
