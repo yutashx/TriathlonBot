@@ -34,7 +34,7 @@ class Menu{
 				throw new Error(`Expected all columns has the same size ${splitedNums[0]}, but event: ${splitedNums[0]}, detail: ${splitedNums[1]}, time: ${splitedNums[2]}, place: ${splitedNums[3]}.`);
 			}
 		}else{
-			throw new Error(`Expected 1 row, but get ${rows.length}. You may need to fix MenuSheetName in config sheet.`)
+			throw new Error(`Expected 1 row, but get ${rows.length}. You may need to fix MenuSheetName in config sheet or there exists the same date in the sheet.`)
 		}
 	}
 
