@@ -60,6 +60,6 @@ function UpDateHolidays() {
 	const holidays = calendar.getCalendar(startDate, endDate);
 
 	const config = (new Config("config", "members")).parseStrictly()
-	const sheet: Sheet = new Sheet(config["SheetId"] as string, config["MenuSheetName"] as string);
+	const sheet: Sheet = new Sheet(config["SheetId"] as string, config["HolidaysSheetName"] as string);
 	sheet.insertRightTop(holidays);
 }
